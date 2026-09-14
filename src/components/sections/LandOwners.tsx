@@ -12,7 +12,7 @@ export default function LandOwners() {
     <section
       className="relative overflow-hidden w-full"
       style={{ paddingBlock: 'clamp(80px, 10vw, 144px)' }}
-      id="land-owners-section"
+      id="land-owners"
     >
       {/* Full-width background with navy gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-ish-navy/60 via-[var(--bg-primary)] to-[var(--bg-secondary)]" />
@@ -50,7 +50,7 @@ export default function LandOwners() {
 
           {/* Glowing Gold CTA Button */}
           <Link
-            href="/develop-your-land"
+            href="/consultation"
             className="btn-gold rounded-full inline-block text-base sm:text-lg font-bold px-10 py-4 shadow-[0_0_40px_rgba(212,175,55,0.3)] hover:shadow-[0_0_60px_rgba(212,175,55,0.45)] hover:scale-105 transition-all duration-300"
             id="land-owners-cta"
           >

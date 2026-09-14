@@ -275,7 +275,7 @@ export default function ProjectsPage() {
             <Link href="/consultation" className="btn-gold rounded-sm">
               {t.nav.consultation}
             </Link>
-            <Link href="/develop-your-land" className="btn-outline rounded-sm">
+            <Link href="/#land-owners" className="btn-outline rounded-sm">
               {t.nav.developLand}
             </Link>
           </div>

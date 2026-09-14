@@ -132,7 +132,7 @@ export default function Hero() {
 
           {/* Secondary CTA (Left in RTL): Develop Your Land */}
           <Link
-            href="/develop-your-land"
+            href="/#land-owners"
             className="rounded-full text-sm sm:text-base font-bold px-7 sm:px-9 py-3.5 bg-black/45 hover:bg-black/70 backdrop-blur-md border border-white/35 hover:border-ish-gold text-white shadow-xl shadow-black/60 flex items-center justify-center transition-all duration-300 hover:scale-105"
             id="hero-cta-secondary"
           >
