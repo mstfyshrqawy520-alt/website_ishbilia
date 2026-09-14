@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://ishbilia.dev/</loc><priority>1.0</priority></url>
+  <url><loc>https://ishbilia.dev/about</loc><priority>0.8</priority></url>
+  <url><loc>https://ishbilia.dev/our-story</loc><priority>0.8</priority></url>
+  <url><loc>https://ishbilia.dev/our-process</loc><priority>0.7</priority></url>
+  <url><loc>https://ishbilia.dev/services</loc><priority>0.8</priority></url>
+  <url><loc>https://ishbilia.dev/projects</loc><priority>0.8</priority></url>
+  <url><loc>https://ishbilia.dev/portfolio</loc><priority>0.7</priority></url>
+  <url><loc>https://ishbilia.dev/why-ishbilia</loc><priority>0.7</priority></url>
+  <url><loc>https://ishbilia.dev/contact</loc><priority>0.8</priority></url>
+  <url><loc>https://ishbilia.dev/consultation</loc><priority>0.7</priority></url>
+  <url><loc>https://ishbilia.dev/develop-your-land</loc><priority>0.7</priority></url>
+</urlset>

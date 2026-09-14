@@ -1,0 +1,281 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "ourStory": "Our Story",
+    "ourProcess": "Our Process",
+    "services": "Services",
+    "projects": "Projects",
+    "portfolio": "Portfolio",
+    "whyIshbilia": "Why Ishbilia",
+    "contact": "Contact",
+    "consultation": "Consultation",
+    "developLand": "Develop Your Land",
+    "language": "العربية"
+  },
+  "hero": {
+    "subtitle": "Ishbilia Real Estate Development",
+    "title": "Building the Future, Earning Your Trust",
+    "description": "From day one, Ishbilia set its standards high — not just to deliver a product that satisfies the client, but to make every project a worthy addition to Sadat City.",
+    "cta1": "Discover Our Projects",
+    "cta2": "Develop Your Land",
+    "scrollDown": "Discover More"
+  },
+  "about": {
+    "sectionTitle": "About Ishbilia",
+    "title": "Building a Better City, Project by Project",
+    "description": "One of the greatest things that changes a city for the better is the quality of its developers. Every building constructed today becomes part of tomorrow's cityscape. That's why, from day one, Ishbilia decided to keep its standards high.",
+    "vision": "Our Vision",
+    "visionText": "To be the first name that comes to mind when talking about quality real estate development in Sadat City.",
+    "mission": "Our Mission",
+    "missionText": "Delivering real estate projects that combine quality, distinguished design, and sustainable value, while maintaining the highest standards of transparency and customer service.",
+    "expertise": "Our Expertise",
+    "expertiseText": "We bring together the best architectural and structural minds to deliver projects that maintain their value over time.",
+    "readMore": "Learn More"
+  },
+  "services": {
+    "sectionTitle": "Our Services",
+    "title": "Comprehensive Real Estate Solutions",
+    "description": "From planning and design to execution and delivery — everything your real estate project needs under one roof.",
+    "items": [
+      {
+        "title": "Real Estate Development",
+        "description": "Developing integrated residential and commercial projects from concept to delivery, focusing on sustainable value.",
+        "icon": "building"
+      },
+      {
+        "title": "Construction & Execution",
+        "description": "Construction at the highest engineering standards, from foundations and concrete structure to masonry, under comprehensive engineering supervision.",
+        "icon": "construction"
+      },
+      {
+        "title": "Licensing & Approvals",
+        "description": "Experience in completing procedures for over 2,000 licenses with precision and speed, without letting administrative details delay execution.",
+        "icon": "license"
+      },
+      {
+        "title": "Architecture & Facade Design",
+        "description": "Architectural designs that maximize space utilization while focusing on ventilation, lighting, and resident comfort.",
+        "icon": "design"
+      },
+      {
+        "title": "Exterior Finishing",
+        "description": "Materials that last for years and maintain their quality — successful finishing that preserves its appearance and quality over time.",
+        "icon": "finishing"
+      },
+      {
+        "title": "Project Management",
+        "description": "Comprehensive oversight of every project phase to ensure quality, timeline adherence, and budget compliance.",
+        "icon": "management"
+      },
+      {
+        "title": "Land & Plot Development",
+        "description": "Feasibility studies, planning, and land development to achieve the highest returns while considering future market trends.",
+        "icon": "land"
+      },
+      {
+        "title": "Sales & Marketing",
+        "description": "Integrated marketing strategies ensuring the project reaches its target audience and achieves sales goals.",
+        "icon": "marketing"
+      }
+    ],
+    "learnMore": "Learn More",
+    "requestConsultation": "Request Consultation"
+  },
+  "projects": {
+    "sectionTitle": "Our Projects",
+    "title": "Some of Our Previous Work",
+    "description": "Every project is a success story we're proud of — from planning to delivery.",
+    "viewAll": "View All Projects",
+    "viewDetails": "View Details",
+    "demo": "Demo — Real projects coming soon",
+    "items": [
+      {
+        "title": "Ishbilia Residence",
+        "location": "Sadat City",
+        "type": "Residential",
+        "status": "In Development"
+      },
+      {
+        "title": "Ishbilia Plaza",
+        "location": "Sadat City",
+        "type": "Commercial - Residential",
+        "status": "In Development"
+      },
+      {
+        "title": "Ishbilia Gardens",
+        "location": "Sadat City",
+        "type": "Residential",
+        "status": "In Development"
+      }
+    ]
+  },
+  "process": {
+    "sectionTitle": "Our Process",
+    "title": "From Idea to Key",
+    "description": "The building you see at the end... isn't the whole story, it's just the last chapter. Let's explore all the chapters that came before.",
+    "viewFull": "Discover the Full Story",
+    "steps": [
+      { "title": "Planning & Future Study", "number": "01" },
+      { "title": "Site Selection", "number": "02" },
+      { "title": "Architectural Design", "number": "03" },
+      { "title": "Licensing", "number": "04" },
+      { "title": "Pricing", "number": "05" },
+      { "title": "Construction", "number": "06" },
+      { "title": "Finishing", "number": "07" },
+      { "title": "Utilities & Handover", "number": "08" },
+      { "title": "After-Sales Service", "number": "09" }
+    ]
+  },
+  "why": {
+    "sectionTitle": "Why Ishbilia",
+    "title": "Why Choose Ishbilia?",
+    "items": [
+      {
+        "title": "2000+ Licenses Experience",
+        "description": "We've completed licensing procedures for over 2,000 licenses with precision and speed.",
+        "stat": "2000",
+        "statSuffix": "+"
+      },
+      {
+        "title": "Lasting Quality",
+        "description": "We choose materials that last for years and maintain their quality, not materials whose flaws show after a few months."
+      },
+      {
+        "title": "Future Value",
+        "description": "We don't sell at today's price — we build value for the client's tomorrow."
+      },
+      {
+        "title": "Comprehensive Oversight",
+        "description": "We personally follow up on execution from excavation and foundations to delivery and beyond."
+      }
+    ]
+  },
+  "landOwners": {
+    "sectionTitle": "Land Owners",
+    "title": "Develop Your Land With Ishbilia",
+    "description": "Have land and want to develop it? Ishbilia offers you a comprehensive partnership — from feasibility studies and design to execution, marketing, and sales.",
+    "cta": "Get Started"
+  },
+  "contactCta": {
+    "title": "Every chapter in this journey had one goal",
+    "description": "That every client who chose Ishbilia feels their choice was the right one. Thank you to every client who trusted us, and to everyone who chose to make Ishbilia part of their plan and future.",
+    "closing": "Ishbilia... a name we build project by project, and a trust we maintain generation after generation.",
+    "cta": "Contact Us"
+  },
+  "story": {
+    "sectionTitle": "Our Story",
+    "title": "All the Chapters Before the Building",
+    "intro": "One of the greatest things that changes a city for the better is the quality of its developers. Every building constructed today becomes part of tomorrow's cityscape. That's why, from day one, Ishbilia decided to keep its standards high — not just to deliver a product that satisfies the client, but to make every project a worthy addition to Sadat City.",
+    "introHighlight": "The building you see at the end... isn't the whole story, it's just the last chapter. Let's explore all the chapters that came before.",
+    "chapters": [
+      {
+        "number": "01",
+        "title": "Planning & Future Study",
+        "content": "Our beginning isn't from the land, it's from the future. Before choosing a site or starting a project, we study market trends, future area development, expansion lines, and expected service locations. We don't look for what's suitable now — we look for what will hold value tomorrow."
+      },
+      {
+        "number": "02",
+        "title": "Site Selection",
+        "content": "After identifying the area, we search for the best locations within it. We consider wind directions, ventilation, project orientation, proximity to services, main roads, and accessibility — because every detail affects the quality of the place and the comfort of its residents."
+      },
+      {
+        "number": "03",
+        "title": "Architectural & Structural Design",
+        "content": "Thanks to our expertise and the finest architectural and structural minds we've assembled, we can maximize space without waste, ensure comfortable movement within each unit, focus on ventilation in every space, distribute lighting intelligently, ensure design suitability for client needs, and guarantee the building maintains its value and appearance over time."
+      },
+      {
+        "number": "04",
+        "title": "Licensing",
+        "content": "Our experience makes the difference here: we've completed licensing procedures for over 2,000 licenses with precision, following up on every step until completion in the shortest time possible without letting administrative details delay execution."
+      },
+      {
+        "number": "05",
+        "title": "Pricing",
+        "content": "After determining all project details, we calculate land, design, execution, materials, and every phase the project goes through, looking beyond the purchase moment itself — our goal is for the client's choice to retain its value over time. At Ishbilia, we don't sell at today's price — we build value for the client's tomorrow."
+      },
+      {
+        "number": "06",
+        "title": "Concrete Structure & Masonry",
+        "content": "We focus on internal details before external ones, from excavation and foundations through the concrete structure and masonry, with every phase under comprehensive engineering supervision. The client isn't buying a drawing or a promise — they're buying a solid foundation that will last a lifetime. And we personally oversee the execution."
+      },
+      {
+        "number": "07",
+        "title": "Finishing",
+        "content": "The final touches reveal all the details from previous phases, and this is the phase the client will see every day. We choose materials that last for years and maintain their quality, not materials whose flaws appear after a few months. Successful finishing, for us, isn't what looks good on delivery day, but what maintains its appearance and quality after years."
+      },
+      {
+        "number": "08",
+        "title": "Utilities & Service Delivery",
+        "content": "Utilities for us aren't extras — they're essentials. From electricity and water meters to service procedures and elevator installation, we handle these procedures entirely, so the client receives their unit ready without worrying about trips and paperwork."
+      },
+      {
+        "number": "09",
+        "title": "After-Sales Service",
+        "content": "Our relationship with the client doesn't end at delivery. After-sales service is an essential part of the experience, aiming to ensure the client always finds someone to respond to, follow up with, and address their inquiries and needs after handover."
+      }
+    ],
+    "closing": "Every chapter in this journey had one goal: that every client who chose Ishbilia feels their choice was the right one. Thank you to every client who trusted us, and to everyone who chose to make Ishbilia part of their plan and future. This trust is a responsibility we maintain in every decision, every detail, and every new project.",
+    "closingHighlight": "Ishbilia... a name we build project by project, and a trust we maintain generation after generation."
+  },
+  "contact": {
+    "sectionTitle": "Contact Us",
+    "title": "We'd Love to Hear From You",
+    "description": "Whether you're a client, land owner, investor, or partner — reach out and we'll get back to you as soon as possible.",
+    "address": "Zone 8, Ganna Mall, 3rd Floor, Next to Post Office & Qasr El Salam Restaurant, Sadat City, Egypt",
+    "phone1": "+20 10 10722349",
+    "phone2": "+20 10 32032286",
+    "email": "ishbilia1210@gmail.com",
+    "callUs": "Call Us",
+    "emailUs": "Email Us",
+    "visitUs": "Visit Us",
+    "followUs": "Follow Us"
+  },
+  "consultation": {
+    "title": "Request a Free Consultation",
+    "description": "Fill in your details and we'll contact you soon to discuss your needs.",
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "email": "Email Address",
+    "interest": "Type of Interest",
+    "interestOptions": ["Buy a Residential Unit", "Buy a Commercial Unit", "Land Development", "Investment", "Partnership", "Other"],
+    "message": "Your Message",
+    "submit": "Submit Request",
+    "sending": "Sending...",
+    "success": "Your request has been sent successfully! We'll be in touch soon.",
+    "error": "An error occurred. Please try again.",
+    "validation": {
+      "nameRequired": "Name is required",
+      "phoneRequired": "Phone number is required",
+      "phoneInvalid": "Invalid phone number",
+      "emailInvalid": "Invalid email address"
+    }
+  },
+  "developLand": {
+    "title": "Develop Your Land With Ishbilia",
+    "description": "Have land and want to develop it? Ishbilia offers you a comprehensive partnership — from feasibility studies and design to execution, marketing, and sales.",
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "email": "Email Address",
+    "landLocation": "Land Location",
+    "landArea": "Approximate Area",
+    "ownershipType": "Ownership Type",
+    "ownershipOptions": ["Full Ownership", "Usufruct", "Partnership", "Other"],
+    "projectIdea": "Project Idea",
+    "message": "Additional Message",
+    "documents": "Upload Documents (Optional)",
+    "documentsHint": "You can upload photos or documents related to the land",
+    "submit": "Submit Request",
+    "sending": "Sending...",
+    "success": "Your request has been sent successfully! Our team will contact you soon to study the opportunity.",
+    "error": "An error occurred. Please try again."
+  },
+  "footer": {
+    "description": "Ishbilia Real Estate Development — Building a better city, project by project.",
+    "quickLinks": "Quick Links",
+    "contactInfo": "Contact Info",
+    "followUs": "Follow Us",
+    "rights": "All Rights Reserved",
+    "closing": "Ishbilia... a name we build project by project"
+  }
+}
