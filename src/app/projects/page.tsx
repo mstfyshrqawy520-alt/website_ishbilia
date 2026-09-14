@@ -115,12 +115,13 @@ export default function ProjectsPage() {
 
                 {/* Action Buttons */}
                 <div className="flex flex-wrap items-center gap-3 pt-4">
-                  <button
-                    onClick={() => setSelectedProject(featuredProject)}
-                    className="btn-gold text-sm py-2.5 px-6 rounded-sm shadow-lg"
+                  <Link
+                    href={`/projects/${featuredProject.slug}`}
+                    className="btn-gold text-sm py-2.5 px-6 rounded-sm shadow-lg inline-flex items-center gap-2 font-bold"
                   >
-                    {isAr ? 'استعراض المخططات والوحدات' : 'Explore Floor Plans & Units'}
-                  </button>
+                    <span>{isAr ? 'استعراض المخططات والوحدات' : 'Explore Floor Plans & Units'}</span>
+                    <span>←</span>
+                  </Link>
 
                   <a
                     href={`https://wa.me/201010722349?text=${encodeURIComponent('السلام عليكم، أود الاستفسار وحجز وحدة في مشروع إشبيلية 1518')}`}
@@ -193,10 +194,10 @@ export default function ProjectsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProjects.map((project) => (
-              <div
+              <Link
                 key={project.id}
-                onClick={() => setSelectedProject(project)}
-                className="project-card group glass-card rounded-md overflow-hidden hover:-translate-y-2 transition-all duration-500 border border-white/10 hover:border-ish-gold/50 cursor-pointer flex flex-col"
+                href={`/projects/${project.slug}`}
+                className="project-card group glass-card rounded-md overflow-hidden hover:-translate-y-2 transition-all duration-500 border border-white/10 hover:border-ish-gold/50 cursor-pointer flex flex-col block"
               >
                 <div className="relative h-64 bg-ish-black overflow-hidden">
                   <Image
@@ -221,7 +222,7 @@ export default function ProjectsPage() {
 
                 <div className="p-6 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-ish-white font-bold text-xl mb-2 group-hover:text-ish-gold transition-colors">
+                    <h3 className="text-ish-white font-bold text-xl mb-2 group-hover:text-ish-gold transition-colors font-headline">
                       {isAr ? project.title : project.titleEn}
                     </h3>
                     <div className="flex items-center gap-2 text-xs text-ish-gray mb-3">
@@ -231,7 +232,7 @@ export default function ProjectsPage() {
                       </svg>
                       <span>{isAr ? `${project.city} • ${project.zone}` : `${project.cityEn} • ${project.zoneEn}`}</span>
                     </div>
-                    <p className="text-xs text-ish-gray line-clamp-3 mb-4 leading-relaxed">
+                    <p className="text-xs text-ish-gray line-clamp-3 mb-4 leading-relaxed font-body">
                       {isAr ? project.description : project.descriptionEn}
                     </p>
                   </div>
@@ -247,14 +248,14 @@ export default function ProjectsPage() {
                         : 'Multiple Spaces'}
                     </span>
                     <span className="text-xs font-bold text-ish-white group-hover:text-ish-gold flex items-center gap-1">
-                      {isAr ? 'عرض التفاصيل' : 'View Details'}
+                      {isAr ? 'صفحة المشروع والمخططات' : 'Project Page'}
                       <svg className="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

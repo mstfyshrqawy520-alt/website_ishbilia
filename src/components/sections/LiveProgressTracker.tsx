@@ -1,11 +1,13 @@
 'use client';
 
+import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/i18n/LanguageProvider';
 import { useScrollReveal } from '@/lib/motion/useScrollAnimation';
 
 interface ProgressProject {
   id: string;
+  slug: string;
   plot: string;
   title: string;
   titleEn: string;
@@ -24,6 +26,7 @@ interface ProgressProject {
 const progressProjectsData: ProgressProject[] = [
   {
     id: 'proj-1518',
+    slug: 'ishbilia-1518-zone-29',
     plot: '1518',
     title: 'مشروع إشبيلية 1518',
     titleEn: 'Ishbilia 1518 Project',
@@ -45,6 +48,7 @@ const progressProjectsData: ProgressProject[] = [
   },
   {
     id: 'proj-1490',
+    slug: 'ishbilia-1490-golden-zone',
     plot: '1490',
     title: 'مشروع إشبيلية 1490',
     titleEn: 'Ishbilia 1490 Project',
@@ -66,6 +70,7 @@ const progressProjectsData: ProgressProject[] = [
   },
   {
     id: 'proj-810',
+    slug: 'ishbilia-commercial-plaza',
     plot: '810',
     title: 'مشروع إشبيلية بلازا (810)',
     titleEn: 'Ishbilia Plaza 810',
@@ -138,7 +143,10 @@ export default function LiveProgressTracker() {
                 className="glass-card rounded-2xl overflow-hidden border border-white/15 hover:border-ish-gold/50 transition-all duration-300 flex flex-col shadow-xl group hover:-translate-y-1.5"
               >
                 {/* Image & Progress Overlay */}
-                <div className="relative h-56 w-full overflow-hidden bg-ish-black">
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className="relative h-56 w-full overflow-hidden bg-ish-black block cursor-pointer"
+                >
                   <Image
                     src={project.image}
                     alt={project.title}
@@ -162,14 +170,16 @@ export default function LiveProgressTracker() {
                       {isAr ? project.zone : project.zoneEn}
                     </span>
                   </div>
-                </div>
+                </Link>
 
                 {/* Card Body */}
                 <div className="p-6 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-xl font-bold text-ish-white mb-2 group-hover:text-ish-gold transition-colors font-headline">
-                      {isAr ? project.title : project.titleEn}
-                    </h3>
+                    <Link href={`/projects/${project.slug}`}>
+                      <h3 className="text-xl font-bold text-ish-white mb-2 group-hover:text-ish-gold transition-colors font-headline cursor-pointer">
+                        {isAr ? project.title : project.titleEn}
+                      </h3>
+                    </Link>
 
                     {/* Overall Progress Bar */}
                     <div className="mb-4">
@@ -214,16 +224,27 @@ export default function LiveProgressTracker() {
                     </div>
                   </div>
 
-                  {/* Action Button: WhatsApp Site Report */}
-                  <a
-                    href={whatsappReportUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-3 rounded-xl text-xs sm:text-sm font-bold text-ish-black bg-ish-gold hover:bg-ish-gold-light transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-ish-gold/25"
-                  >
-                    <span>📋</span>
-                    <span>{isAr ? 'طلب التقرير الهندسي المصور للمشروع' : 'Request Site Photo Audit Report'}</span>
-                  </a>
+                  <div className="space-y-2">
+                    {/* Primary Button: View Dedicated Project Page */}
+                    <Link
+                      href={`/projects/${project.slug}`}
+                      className="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-ish-gold bg-white/5 border border-ish-gold/30 hover:bg-ish-gold hover:text-ish-black transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                    >
+                      <span>{isAr ? 'صفحة المشروع والمخططات الهندسية' : 'Project Blueprint & Specs'}</span>
+                      <span>↗</span>
+                    </Link>
+
+                    {/* Action Button: WhatsApp Site Report */}
+                    <a
+                      href={whatsappReportUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-2.5 rounded-xl text-xs font-bold text-ish-white bg-ish-black border border-white/15 hover:border-ish-gold/50 transition-all flex items-center justify-center gap-1.5"
+                    >
+                      <span>📋</span>
+                      <span>{isAr ? 'طلب التقرير الهندسي المصور' : 'Request Photo Audit'}</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             );

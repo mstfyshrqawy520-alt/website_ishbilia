@@ -116,9 +116,9 @@ export default function FeaturedProjects() {
                 className="group glass-card rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-2 border border-white/10 hover:border-ish-gold/60 flex flex-col hover:shadow-[0_20px_50px_rgba(202,160,82,0.2)] w-full relative"
               >
                 {/* Image Container with Luxury Badges */}
-                <div
-                  className="relative h-64 sm:h-72 w-full overflow-hidden bg-ish-black cursor-pointer"
-                  onClick={() => setSelectedProject(project)}
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className="relative h-64 sm:h-72 w-full overflow-hidden bg-ish-black cursor-pointer block"
                 >
                   <Image
                     src={project.facadeImage}
@@ -147,20 +147,21 @@ export default function FeaturedProjects() {
                   {/* Quick Expand Button */}
                   <div className="absolute top-4 end-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span className="w-8 h-8 rounded-full bg-ish-black/80 text-ish-gold flex items-center justify-center text-sm border border-ish-gold/40">
-                      🔍
+                      ↗
                     </span>
                   </div>
-                </div>
+                </Link>
 
                 {/* Card Body */}
                 <div className="p-6 flex-1 flex flex-col justify-between bg-gradient-to-b from-transparent to-black/30">
                   <div>
-                    <h3
-                      onClick={() => setSelectedProject(project)}
-                      className="text-ish-white font-bold text-xl mb-2.5 group-hover:text-ish-gold transition-colors font-headline cursor-pointer"
-                    >
-                      {isAr ? project.title : project.titleEn}
-                    </h3>
+                    <Link href={`/projects/${project.slug}`}>
+                      <h3
+                        className="text-ish-white font-bold text-xl mb-2.5 group-hover:text-ish-gold transition-colors font-headline cursor-pointer"
+                      >
+                        {isAr ? project.title : project.titleEn}
+                      </h3>
+                    </Link>
 
                     <p className="text-xs sm:text-sm text-ish-gray-light line-clamp-2 mb-4 leading-relaxed font-body">
                       {isAr ? project.description : project.descriptionEn}
@@ -206,15 +207,14 @@ export default function FeaturedProjects() {
 
                   {/* Dual Action Buttons */}
                   <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center gap-2.5">
-                    {/* Primary Action: Open Plans & Units Modal */}
-                    <button
-                      type="button"
-                      onClick={() => setSelectedProject(project)}
+                    {/* Primary Action: Navigate to Dedicated Project Page */}
+                    <Link
+                      href={`/projects/${project.slug}`}
                       className="w-full sm:flex-1 py-2.5 px-4 rounded-xl text-xs font-bold text-ish-black bg-ish-gold hover:bg-ish-gold-light transition-all duration-300 flex items-center justify-center gap-1.5 shadow-md hover:shadow-ish-gold/20 cursor-pointer"
                     >
-                      <span>{isAr ? 'المخططات والوحدات' : 'Floor Plans & Units'}</span>
+                      <span>{isAr ? 'تفاصيل المشروع والمخططات' : 'Project Blueprint Page'}</span>
                       <span className="text-sm">↗</span>
-                    </button>
+                    </Link>
 
                     {/* Secondary Action: Direct WhatsApp Booking */}
                     <a
@@ -224,7 +224,7 @@ export default function FeaturedProjects() {
                       className="w-full sm:w-auto py-2.5 px-3.5 rounded-xl text-xs font-bold text-emerald-400 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 transition-all flex items-center justify-center gap-1.5"
                     >
                       <span>💬</span>
-                      <span>{isAr ? 'حجز معاينة' : 'Book Tour'}</span>
+                      <span>{isAr ? 'معاينة' : 'Tour'}</span>
                     </a>
                   </div>
                 </div>

@@ -684,9 +684,11 @@ export default function ServicesPage() {
 
                 {/* Content */}
                 <div>
-                  <h3 className="text-2xl font-bold text-ish-white mb-2 group-hover:text-ish-gold transition-colors">
-                    {isAr ? service.titleAr : service.titleEn}
-                  </h3>
+                  <Link href={`/services/${service.id}`}>
+                    <h3 className="text-2xl font-bold text-ish-white mb-2 group-hover:text-ish-gold transition-colors font-headline cursor-pointer">
+                      {isAr ? service.titleAr : service.titleEn}
+                    </h3>
+                  </Link>
                   <p className="text-xs text-ish-gold font-semibold mb-4">
                     {isAr ? service.taglineAr : service.taglineEn}
                   </p>
@@ -727,12 +729,21 @@ export default function ServicesPage() {
 
                 {/* Action Buttons */}
                 <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
-                  <Link
-                    href={`/consultation?service=${service.id}`}
-                    className="btn-gold rounded-full px-5 py-2.5 text-xs font-bold shadow-md shadow-ish-gold/15"
-                  >
-                    {isAr ? service.ctaTextAr : service.ctaTextEn}
-                  </Link>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Link
+                      href={`/services/${service.id}`}
+                      className="py-2.5 px-4 rounded-full bg-ish-gold/15 hover:bg-ish-gold text-ish-gold hover:text-ish-black border border-ish-gold/30 text-xs font-bold transition-all shadow-sm"
+                    >
+                      {isAr ? 'الدليل التفصيلي ومراحل العمل ←' : 'Full Dossier & Steps →'}
+                    </Link>
+
+                    <Link
+                      href={`/consultation?service=${service.id}`}
+                      className="btn-gold rounded-full px-4 py-2.5 text-xs font-bold shadow-md shadow-ish-gold/15"
+                    >
+                      {isAr ? service.ctaTextAr : service.ctaTextEn}
+                    </Link>
+                  </div>
 
                   <a
                     href={`https://wa.me/201010722349?text=${encodeURIComponent(

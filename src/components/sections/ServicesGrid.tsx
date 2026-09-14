@@ -74,24 +74,44 @@ export default function ServicesGrid() {
 
         {/* Symmetrical 4-Column Services Grid (2 balanced rows of 4) */}
         <div ref={containerRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
-          {t.services.items.map((service, index) => (
-            <div
-              key={index}
-              className="stagger-child glass-card rounded-2xl p-6 group cursor-pointer border border-white/10 hover:border-ish-gold/60 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-ish-gold/10 transition-all duration-300 flex flex-col justify-between w-full"
-            >
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-ish-gold/10 border border-ish-gold/25 flex items-center justify-center text-ish-gold mb-5 shrink-0 transition-all duration-300 group-hover:scale-105 group-hover:bg-ish-gold/20 group-hover:border-ish-gold/50 shadow-sm">
-                  {serviceIcons[service.icon] || serviceIcons.building}
+          {t.services.items.map((service, index) => {
+            const serviceSlugMap: Record<string, string> = {
+              building: 'development',
+              construction: 'construction',
+              license: 'licensing',
+              design: 'architecture',
+              finishing: 'finishes',
+              management: 'management',
+              land: 'land',
+              marketing: 'advisory',
+            };
+            const targetSlug = serviceSlugMap[service.icon] || 'development';
+
+            return (
+              <Link
+                key={index}
+                href={`/services/${targetSlug}`}
+                className="stagger-child glass-card rounded-2xl p-6 group cursor-pointer border border-white/10 hover:border-ish-gold/60 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-ish-gold/15 transition-all duration-300 flex flex-col justify-between w-full block"
+              >
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-ish-gold/10 border border-ish-gold/25 flex items-center justify-center text-ish-gold mb-5 shrink-0 transition-all duration-300 group-hover:scale-105 group-hover:bg-ish-gold/20 group-hover:border-ish-gold/50 shadow-sm">
+                    {serviceIcons[service.icon] || serviceIcons.building}
+                  </div>
+                  <h3 className="text-ish-white font-bold text-lg mb-2.5 group-hover:text-ish-gold transition-colors font-headline">
+                    {service.title}
+                  </h3>
+                  <p className="text-ish-gray-light text-xs sm:text-sm leading-relaxed mb-4">
+                    {service.description}
+                  </p>
                 </div>
-                <h3 className="text-ish-white font-bold text-lg mb-2.5 group-hover:text-ish-gold transition-colors">
-                  {service.title}
-                </h3>
-                <p className="text-ish-gray-light text-xs sm:text-sm leading-relaxed">
-                  {service.description}
-                </p>
-              </div>
-            </div>
-          ))}
+
+                <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-bold text-ish-gold group-hover:text-ish-gold-light transition-colors">
+                  <span>{isAr ? 'تفاصيل الخدمة ومراحلها' : 'Service Details & Roadmap'}</span>
+                  <span className="transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform">←</span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
         {/* CTA with Clear Action-Oriented Label */}
@@ -101,7 +121,7 @@ export default function ServicesGrid() {
             className="btn-outline rounded-full inline-block text-sm sm:text-base font-bold px-9 py-3.5 shadow-lg hover:shadow-ish-gold/20"
             id="services-cta"
           >
-            {isAr ? 'استعرض كافة تفاصيل خدماتنا' : 'Explore All Our Services'}
+            {isAr ? 'استعرض الدليل الشامل لكافة خدماتنا' : 'Explore All Our Services'}
           </Link>
         </div>
       </div>
