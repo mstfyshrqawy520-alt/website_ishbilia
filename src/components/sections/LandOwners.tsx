@@ -10,59 +10,93 @@ export default function LandOwners() {
   const isAr = lang === 'ar';
   const sectionRef = useScrollReveal();
 
-  // Interactive Simulator State
-  const [district, setDistrict] = useState('zone-21');
-  const [plotArea, setPlotArea] = useState<number>(500);
+  // Custom Plot Data State (Entered directly by the landowner - we have zero prior assumptions)
+  const [ownerName, setOwnerName] = useState('');
+  const [ownerPhone, setOwnerPhone] = useState('');
+  const [plotNumber, setPlotNumber] = useState('');
+  const [plotZone, setPlotZone] = useState('المنطقة 21');
+  const [customZone, setCustomZone] = useState('');
+  const [plotArea, setPlotArea] = useState('');
+  const [facadeWidth, setFacadeWidth] = useState('');
+  const [plotDepth, setPlotDepth] = useState('');
+  const [streetWidth, setStreetWidth] = useState('20م');
   const [facadeType, setFacadeType] = useState('corner');
+  const [plotUsage, setPlotUsage] = useState('residential');
+  const [handoverStatus, setHandoverStatus] = useState('received');
+  const [licenseStatus, setLicenseStatus] = useState('no-license');
+  const [ownerNotes, setOwnerNotes] = useState('');
 
-  // Calculation estimates (without hardcoding profit ratios)
-  const getCalculatedSpecs = () => {
-    // Standard building footprint in Sadat City is around 50% to 55% ground, typical 55% to 60%
-    const footprint = Math.round(plotArea * 0.55);
-    // Typical residential building: Ground + 3 typical floors + roof service
-    const estUnits = plotArea >= 700 ? '10 - 12 وحدة فاخرة' : plotArea >= 500 ? '8 - 10 وحدات فاخرة' : '6 - 8 وحدات فاخرة';
-    const estUnitsEn = plotArea >= 700 ? '10 - 12 Luxury Units' : plotArea >= 500 ? '8 - 10 Luxury Units' : '6 - 8 Luxury Units';
-    const gardenArea = plotArea >= 500 ? 'حدائق خاصة تصل إلى 110م²' : 'حدائق خاصة تصل إلى 75م²';
-    const gardenAreaEn = plotArea >= 500 ? 'Private gardens up to 110m²' : 'Private gardens up to 75m²';
+  // Effective Zone Name
+  const effectiveZone = plotZone === 'custom' ? (customZone || (isAr ? 'منطقة مخصصة' : 'Custom Zone')) : plotZone;
 
-    return {
-      footprint,
-      estUnits: isAr ? estUnits : estUnitsEn,
-      gardenArea: isAr ? gardenArea : gardenAreaEn,
-      floors: isAr ? 'بدروم + أرضي + 3 أدوار متكررة + غرف سطح' : 'Basement + Ground + 3 Typical Floors + Roof'
-    };
-  };
+  const handleWhatsAppSend = (e: React.FormEvent) => {
+    e.preventDefault();
 
-  const specs = getCalculatedSpecs();
-
-  const handleWhatsAppInquiry = () => {
-    const districtName =
-      district === 'zone-21'
-        ? 'المنطقة 21 (حي النخبة والفيلات)'
-        : district === 'zone-29'
-        ? 'المنطقة 29 (بجوار جامعة السادات)'
-        : district === 'zone-14'
-        ? 'المنطقة 14 (الحي السكني الخدمي)'
-        : 'منطقة أخرى بالسادات';
-
-    const facadeName =
+    const facadeText =
       facadeType === 'corner'
-        ? 'ناصية بحري على شارعين'
-        : facadeType === 'front-north'
-        ? 'واجهة بحري صريحة'
-        : 'شارع رئيسي';
+        ? (isAr ? 'ناصية على شارعين' : 'Corner on two streets')
+        : facadeType === 'north'
+        ? (isAr ? 'واجهة بحري صريحة' : 'Direct North-facing')
+        : facadeType === 'garden'
+        ? (isAr ? 'إطلالة على حديقة / ممشى' : 'Garden / Promenade view')
+        : (isAr ? 'شارع رئيسي واسع' : 'Main Boulevard');
+
+    const usageText =
+      plotUsage === 'residential'
+        ? (isAr ? 'عمارة سكنية فاخرة (بدروم + أرضي + متكرر)' : 'Luxury Residential Building')
+        : plotUsage === 'villa'
+        ? (isAr ? 'فيلا سكنية خاصة / توين هاوس' : 'Private Villa / Twin House')
+        : plotUsage === 'commercial'
+        ? (isAr ? 'مبنى تجاري / إداري / خدمي' : 'Commercial / Mixed-Use')
+        : (isAr ? 'طبقاً لاشتراطات تخصيص الجهاز' : 'Per Authority Zoning Code');
+
+    const handoverText =
+      handoverStatus === 'received'
+        ? (isAr ? 'تم استلام الأرض ومحضر الاستلام ساري' : 'Plot received with valid handover document')
+        : (isAr ? 'قيد إجراءات الاستلام من الجهاز' : 'Handover in progress with Sadat Authority');
+
+    const licenseText =
+      licenseStatus === 'no-license'
+        ? (isAr ? 'أرض فضاء بدون رخصة (تتولى إشبيلية استخراجها بالكامل مجاناً)' : 'Vacant plot without permit (Ishbilia extracts it)')
+        : licenseStatus === 'licensed'
+        ? (isAr ? 'صادر لها رخصة بناء سارية' : 'Valid building license already issued')
+        : (isAr ? 'رخصة قيد التعديل أو التجديد' : 'License under renewal / modification');
 
     const text = isAr
-      ? `*طلب دراسة شراكة وتطوير أرض — إشبيلية*
-📍 *المنطقة بالسادات:* ${districtName}
-📐 *المساحة التقريبية:* ${plotArea} م²
-🏛️ *نوع الواجهة:* ${facadeName}
-🤝 أمتلك هذه الأرض وأرغب في ترتيب جلسة استشارية بمقر الشركة لمناقشة دراسة الجدوى وتفاصيل الشراكة بالتراضي.`
-      : `*Land Development & Joint Venture Inquiry — Ishbilia*
-📍 *Zone:* ${districtName}
-📐 *Approx Area:* ${plotArea} m²
-🏛️ *Facade:* ${facadeName}
-🤝 I own this plot and would like to schedule an executive meeting to review feasibility and flexible partnership terms.`;
+      ? `*طلب دراسة وتطوير قطعة أرض خاصة — إشبيلية*
+📌 *بيانات مالك الأرض:*
+👤 *الاسم:* ${ownerName || 'غير محدد'}
+📱 *الهاتف:* ${ownerPhone || 'غير محدد'}
+
+🏛️ *مواصفات القطعة المُدخلة من المالك:*
+📍 *المنطقة / الحي بالسادات:* ${effectiveZone}
+🔢 *رقم القطعة:* ${plotNumber ? `قطعة ${plotNumber}` : 'غير محدد'}
+📐 *المساحة الفعلية:* ${plotArea ? `${plotArea} م²` : 'غير محددة'}
+📏 *الأبعاد:* ${facadeWidth ? `واجهة ${facadeWidth}م` : ''} ${plotDepth ? `× عمق ${plotDepth}م` : ''} ${!facadeWidth && !plotDepth ? 'سيتم مراجعتها من الرفع المساحي' : ''}
+🛣️ *عرض الشارع والواجهة:* عرض ${streetWidth} — ${facadeText}
+🏗️ *نوع النشاط والتخصيص:* ${usageText}
+📜 *موقف محضر الاستلام:* ${handoverText}
+📑 *موقف التراخيص:* ${licenseText}
+
+💬 *رغبة وتطلعات المالك للشراكة:*
+${ownerNotes || 'أرغب في مراجعة الاشتراطات وتحديد موعد ميتنج خاص لمناقشة صيغة الشراكة وتوزيع الوحدات بالتراضي وبمرونة كاملة.'}`
+      : `*Private Plot Development & Feasibility Request — Ishbilia*
+📌 *Landowner Details:*
+👤 *Name:* ${ownerName || 'N/A'}
+📱 *Phone:* ${ownerPhone || 'N/A'}
+
+🏛️ *Plot Specifications Entered by Owner:*
+📍 *Sadat Zone / District:* ${effectiveZone}
+🔢 *Plot Number:* ${plotNumber || 'To be specified'}
+📐 *Exact Area:* ${plotArea ? `${plotArea} m²` : 'N/A'}
+📏 *Dimensions:* ${facadeWidth ? `Facade ${facadeWidth}m` : ''} ${plotDepth ? `× Depth ${plotDepth}m` : ''}
+🛣️ *Street & Facade:* Width ${streetWidth} — ${facadeText}
+🏗️ *Usage Type:* ${usageText}
+📜 *Handover Status:* ${handoverText}
+📑 *License Status:* ${licenseText}
+
+💬 *Owner Vision & Notes:*
+${ownerNotes || 'Requesting a zoning audit and a private executive meeting to agree on flexible, collaborative JV terms.'}`;
 
     window.open(`https://wa.me/201032032286?text=${encodeURIComponent(text)}`, '_blank');
   };
@@ -121,7 +155,7 @@ export default function LandOwners() {
       style={{ paddingBlock: 'clamp(80px, 9vw, 140px)' }}
       id="land-owners"
     >
-      {/* Neoclassical Islamic Geometric Pattern Overlay */}
+      {/* Neoclassical Geometric Pattern Overlay */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
@@ -140,198 +174,376 @@ export default function LandOwners() {
 
       <div className="section-container relative z-10">
         {/* 1. Grand Header */}
-        <div ref={sectionRef} className="reveal-up text-center max-w-4xl mx-auto mb-16">
+        <div ref={sectionRef} className="reveal-up text-center max-w-4xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ish-gold/15 border border-ish-gold/40 text-ish-gold text-xs sm:text-sm font-semibold mb-6 shadow-lg shadow-ish-gold/10">
             <span className="w-2 h-2 rounded-full bg-ish-gold animate-pulse" />
-            <span>{isAr ? 'بوابة شراكات التطوير العقاري • مدينة السادات' : 'Land Joint Venture & Development • Sadat City'}</span>
+            <span>{isAr ? 'بوابة ملاك الأراضي المستقلة • مدينة السادات' : 'Independent Landowners Portal • Sadat City'}</span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-ish-white mb-6 leading-tight font-headline">
             {isAr ? (
               <>
-                حوّل أرضك الفضاء إلى <span className="gold-gradient-text">صرح معماري فاخر</span>
+                أرضك ملكك وأنت صاحب القرار.. <br className="hidden sm:inline" />
+                <span className="gold-gradient-text">حوّلها إلى صرح معماري فاخر</span>
               </>
             ) : (
               <>
-                Transform Your Vacant Plot into a <span className="gold-gradient-text">Luxury Architectural Landmark</span>
+                Your Land, Your Vision.. <br className="hidden sm:inline" />
+                <span className="gold-gradient-text">Transform It into a Luxury Landmark</span>
               </>
             )}
           </h2>
 
           <div className="gold-line max-w-xs mx-auto mb-6" />
 
-          <p className="text-ish-gray-light text-base sm:text-xl leading-relaxed max-w-3xl mx-auto font-body">
+          <p className="text-ish-gray-light text-base sm:text-lg leading-relaxed max-w-3xl mx-auto font-body">
             {isAr
-              ? 'شراكة تطوير متكاملة بتكلفة صفرية على مالك الأرض. تتكفل إشبيلية بنسبة 100% بكافة مصاريف التراخيص والرسومات، التنفيذ الخرساني B350، والتشطيبات الفاخرة، مع صيغ مشاركة مرنة يتم الاتفاق عليها في جلسة استشارية خاصة.'
-              : 'Zero-cost partnership for landowners. Ishbilia fully funds 100% of licensing fees, engineering, B350 concrete construction, and finishes, with flexible terms tailored in an executive consultation.'}
+              ? 'نحن لا نملك أي بيانات مسبقة عن أرضك ولا نفرض أي نماذج جاهزة لمشاريعنا. أدخل بيانات ومواصفات قطعتك الخاصة بدقة، ليتولى فريقنا الهندسي دراستها مجاناً في جهاز مدينة السادات، ثم نلتقي بك في ميتنج مغلق لنحدد معاً صيغة الشراكة وتوزيع الوحدات بالتراضي وبأقصى درجات المرونة.'
+              : 'Every plot is independent and unique. Enter your exact land specifications directly; our engineering team will audit municipal zoning at Sadat City Authority for free, followed by an executive consultation to collaboratively agree on flexible, customized JV terms.'}
           </p>
         </div>
 
-        {/* 2. Interactive Land Valuation & Specs Simulator */}
+        {/* 2. Detailed Plot Submission & Assessment Form */}
         <div className="glass-card rounded-2xl border border-ish-gold/30 p-6 sm:p-10 shadow-2xl bg-gradient-to-br from-ish-gold/10 via-ish-black to-ish-black max-w-5xl mx-auto mb-20 relative overflow-hidden backdrop-blur-xl">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 pb-6 border-b border-white/10">
             <div>
               <span className="text-xs font-bold text-ish-gold uppercase tracking-wider block mb-1">
-                {isAr ? 'حاسبة التطوير والاشتراطات التفاعلية' : 'Interactive Land Development Simulator'}
+                {isAr ? 'ملف تسجيل وتوثيق بيانات قطعة أرضك الخاصة' : 'Independent Land Dossier Submission'}
               </span>
               <h3 className="text-xl sm:text-2xl font-bold text-ish-white font-headline">
-                {isAr ? 'احسب إمكانيات ومخرجات البناء لقطعة أرضك' : 'Estimate Allowable Build Specifications for Your Plot'}
+                {isAr ? 'أدخل تفاصيل قطعتك كما وردت بمحضر استلامك' : 'Enter Your Plot Details as per Handover Document'}
               </h3>
             </div>
             <span className="text-xs px-3.5 py-1.5 rounded-full bg-ish-gold/20 text-ish-gold font-bold border border-ish-gold/30 shrink-0">
-              {isAr ? 'كود جهاز مدينة السادات' : 'Sadat City Building Code'}
+              {isAr ? 'فحص هندسي مجاني بالجهاز خلال 48 ساعة' : 'Complimentary Audit in 48h'}
             </span>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* Controls Side (7 cols) */}
-            <div className="lg:col-span-7 space-y-6">
-              {/* Select District */}
-              <div>
-                <label className="block text-xs font-bold text-ish-gold mb-2">
-                  {isAr ? '1. اختر المنطقة بمدينة السادات:' : '1. Select Sadat City Zone:'}
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                  {[
-                    { id: 'zone-21', nameAr: 'المنطقة 21 (النخبة)', nameEn: 'Zone 21 (Elite)' },
-                    { id: 'zone-29', nameAr: 'المنطقة 29 (الجامعة)', nameEn: 'Zone 29 (Univ)' },
-                    { id: 'zone-14', nameAr: 'المنطقة 14 (الخدمي)', nameEn: 'Zone 14 (Services)' },
-                  ].map((z) => (
-                    <button
-                      key={z.id}
-                      type="button"
-                      onClick={() => setDistrict(z.id)}
-                      className={`p-3 rounded-xl text-xs font-bold transition-all cursor-pointer border text-center ${
-                        district === z.id
-                          ? 'bg-ish-gold text-ish-black border-ish-gold shadow-md shadow-ish-gold/20'
-                          : 'bg-ish-black/70 border-white/10 text-ish-white hover:border-ish-gold/40'
-                      }`}
-                    >
-                      {isAr ? z.nameAr : z.nameEn}
-                    </button>
-                  ))}
-                </div>
-              </div>
+          <form onSubmit={handleWhatsAppSend}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              {/* Left Form: Landowner Direct Input Fields (7 cols) */}
+              <div className="lg:col-span-7 space-y-5">
+                {/* Row 1: Owner Name & Phone */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-ish-gold mb-2">
+                      {isAr ? 'اسم مالك الأرض الكريم *' : 'Landowner Full Name *'}
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={ownerName}
+                      onChange={(e) => setOwnerName(e.target.value)}
+                      placeholder={isAr ? 'أدخل اسمك الكريم' : 'Your full name'}
+                      className="w-full px-4 py-3 rounded-xl bg-ish-black/80 border border-white/15 text-ish-white text-sm focus:border-ish-gold focus:outline-none transition-colors"
+                    />
+                  </div>
 
-              {/* Select Plot Area Slider / Quick Buttons */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="text-xs font-bold text-ish-gold">
-                    {isAr ? '2. مساحة قطعة الأرض:' : '2. Plot Area:'}
+                  <div>
+                    <label className="block text-xs font-bold text-ish-gold mb-2">
+                      {isAr ? 'رقم الهاتف (مفعل واتساب للتواصل) *' : 'Phone (WhatsApp Active) *'}
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={ownerPhone}
+                      onChange={(e) => setOwnerPhone(e.target.value)}
+                      placeholder={isAr ? '010XXXXXXXX' : '+20 10X XXX XXXX'}
+                      className="w-full px-4 py-3 rounded-xl bg-ish-black/80 border border-white/15 text-ish-white text-sm focus:border-ish-gold focus:outline-none font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+                </div>
+
+                {/* Row 2: Plot Number & Zone */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-ish-gold mb-2">
+                      {isAr ? 'رقم قطعة الأرض (بمحضر الاستلام أو الإخطار) *' : 'Plot Number *'}
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={plotNumber}
+                      onChange={(e) => setPlotNumber(e.target.value)}
+                      placeholder={isAr ? 'مثال: قطعة 1205 أو 740' : 'e.g. Plot 1205'}
+                      className="w-full px-4 py-3 rounded-xl bg-ish-black/80 border border-white/15 text-ish-white text-sm focus:border-ish-gold focus:outline-none transition-colors"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-ish-gold mb-2">
+                      {isAr ? 'المنطقة / الحي بمدينة السادات *' : 'Sadat City District / Zone *'}
+                    </label>
+                    <select
+                      value={plotZone}
+                      onChange={(e) => setPlotZone(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-ish-black border border-white/15 text-ish-white text-sm focus:border-ish-gold focus:outline-none transition-colors"
+                    >
+                      <option value="المنطقة 21">{isAr ? 'المنطقة 21 (حي النخبة والفيلات)' : 'Zone 21 (Elite & Villas)'}</option>
+                      <option value="المنطقة 29">{isAr ? 'المنطقة 29 (بجوار جامعة السادات)' : 'Zone 29 (University District)'}</option>
+                      <option value="المنطقة 14">{isAr ? 'المنطقة 14 (الحي السكني الخدمي)' : 'Zone 14 (Integrated Corridor)'}</option>
+                      <option value="المنطقة 11">{isAr ? 'المنطقة 11' : 'Zone 11'}</option>
+                      <option value="المنطقة 7">{isAr ? 'المنطقة 7' : 'Zone 7'}</option>
+                      <option value="المنطقة 25">{isAr ? 'المنطقة 25' : 'Zone 25'}</option>
+                      <option value="المنطقة المركزية">{isAr ? 'المنطقة المركزية (تجاري / إداري)' : 'Central Axis (Commercial/Admin)'}</option>
+                      <option value="custom">{isAr ? 'منطقة أخرى / مجاورة أخرى (اكتبها يدوياً)' : 'Other Zone (Specify manually)'}</option>
+                    </select>
+
+                    {plotZone === 'custom' && (
+                      <input
+                        type="text"
+                        required
+                        value={customZone}
+                        onChange={(e) => setCustomZone(e.target.value)}
+                        placeholder={isAr ? 'اكتب اسم أو رقم المنطقة / المجاورة بالسادات' : 'Enter zone or neighborhood name in Sadat'}
+                        className="w-full mt-2 px-4 py-2.5 rounded-xl bg-ish-black/90 border border-ish-gold text-ish-white text-xs focus:outline-none"
+                      />
+                    )}
+                  </div>
+                </div>
+
+                {/* Row 3: Exact Plot Area & Dimensions */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-ish-gold mb-2">
+                      {isAr ? 'المساحة الفعلية (م²) *' : 'Exact Area (m²) *'}
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      value={plotArea}
+                      onChange={(e) => setPlotArea(e.target.value)}
+                      placeholder={isAr ? 'مثال: 450 أو 520 أو 640' : 'e.g. 520'}
+                      className="w-full px-4 py-3 rounded-xl bg-ish-black/80 border border-white/15 text-ish-white text-sm focus:border-ish-gold focus:outline-none transition-colors font-mono"
+                      min="100"
+                      max="10000"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-ish-gray-light mb-2">
+                      {isAr ? 'عرض الواجهة (متر):' : 'Facade Width (m):'}
+                    </label>
+                    <input
+                      type="number"
+                      value={facadeWidth}
+                      onChange={(e) => setFacadeWidth(e.target.value)}
+                      placeholder={isAr ? 'مثال: 20م' : 'e.g. 20m'}
+                      className="w-full px-4 py-3 rounded-xl bg-ish-black/80 border border-white/15 text-ish-white text-sm focus:border-ish-gold focus:outline-none font-mono"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-ish-gray-light mb-2">
+                      {isAr ? 'العمق (متر):' : 'Depth (m):'}
+                    </label>
+                    <input
+                      type="number"
+                      value={plotDepth}
+                      onChange={(e) => setPlotDepth(e.target.value)}
+                      placeholder={isAr ? 'مثال: 25م' : 'e.g. 25m'}
+                      className="w-full px-4 py-3 rounded-xl bg-ish-black/80 border border-white/15 text-ish-white text-sm focus:border-ish-gold focus:outline-none font-mono"
+                    />
+                  </div>
+                </div>
+
+                {/* Row 4: Street Width & Usage Type */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-ish-gold mb-2">
+                      {isAr ? 'عرض الشارع أمام القطعة:' : 'Street Width in Front:'}
+                    </label>
+                    <select
+                      value={streetWidth}
+                      onChange={(e) => setStreetWidth(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-ish-black border border-white/15 text-ish-white text-sm focus:border-ish-gold focus:outline-none transition-colors"
+                    >
+                      <option value="12م">{isAr ? 'شارع 12 متراً' : '12-meter street'}</option>
+                      <option value="15م">{isAr ? 'شارع 15 متراً' : '15-meter street'}</option>
+                      <option value="20م">{isAr ? 'شارع 20 متراً' : '20-meter street'}</option>
+                      <option value="24م">{isAr ? 'شارع 24 متراً' : '24-meter street'}</option>
+                      <option value="30م فأكثر">{isAr ? 'شارع 30 متراً أو محور رئيسي' : '30-meter or main boulevard'}</option>
+                      <option value="ناصية شارعين">{isAr ? 'ناصية تطل على شارعين' : 'Corner on two streets'}</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-ish-gold mb-2">
+                      {isAr ? 'نوع التخصيص أو النشاط المستهدف:' : 'Zoning / Target Usage:'}
+                    </label>
+                    <select
+                      value={plotUsage}
+                      onChange={(e) => setPlotUsage(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-ish-black border border-white/15 text-ish-white text-sm focus:border-ish-gold focus:outline-none transition-colors"
+                    >
+                      <option value="residential">{isAr ? 'عمارة سكنية فاخرة (بدروم + أرضي + متكرر)' : 'Luxury Residential Building'}</option>
+                      <option value="villa">{isAr ? 'فيلا سكنية خاصة / توين هاوس' : 'Private Villa / Twin House'}</option>
+                      <option value="commercial">{isAr ? 'مبنى تجاري / إداري / خدمي' : 'Commercial / Admin Building'}</option>
+                      <option value="per-code">{isAr ? 'طبقاً لكود وتخصيص الجهاز للقطعة' : 'Per Sadat Authority Allocation'}</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Row 5: Facade Type Buttons */}
+                <div>
+                  <label className="block text-xs font-bold text-ish-gold mb-2">
+                    {isAr ? 'طبيعة وموقع الواجهة:' : 'Facade Orientation & View:'}
                   </label>
-                  <span className="text-base font-black text-ish-white font-mono bg-ish-black/90 px-3 py-1 rounded-lg border border-white/10">
-                    {plotArea} م²
-                  </span>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {[
+                      { id: 'corner', nameAr: 'ناصية على شارعين', nameEn: 'Corner (2 streets)' },
+                      { id: 'north', nameAr: 'واجهة بحري صريحة', nameEn: 'Direct North' },
+                      { id: 'garden', nameAr: 'إطلالة حديقة / ممشى', nameEn: 'Garden View' },
+                      { id: 'main', nameAr: 'شارع رئيسي واسع', nameEn: 'Main Boulevard' },
+                    ].map((f) => (
+                      <button
+                        key={f.id}
+                        type="button"
+                        onClick={() => setFacadeType(f.id)}
+                        className={`p-2.5 rounded-xl text-xs font-bold border text-center transition-all cursor-pointer ${
+                          facadeType === f.id
+                            ? 'bg-ish-gold text-ish-black border-ish-gold shadow-md font-black'
+                            : 'bg-ish-black/70 border-white/10 text-ish-white hover:border-ish-gold/40'
+                        }`}
+                      >
+                        {isAr ? f.nameAr : f.nameEn}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-4 gap-2 mb-3">
-                  {[400, 500, 600, 800].map((val) => (
-                    <button
-                      key={val}
-                      type="button"
-                      onClick={() => setPlotArea(val)}
-                      className={`py-2 rounded-lg text-xs font-bold border transition-all cursor-pointer ${
-                        plotArea === val
-                          ? 'bg-ish-gold/25 border-ish-gold text-ish-gold'
-                          : 'bg-white/5 border-white/10 text-ish-gray-light hover:border-white/20'
-                      }`}
+                {/* Row 6: Handover & Licensing Status */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-ish-gold mb-2">
+                      {isAr ? 'موقف محضر استلام الأرض من الجهاز:' : 'Handover Document Status:'}
+                    </label>
+                    <select
+                      value={handoverStatus}
+                      onChange={(e) => setHandoverStatus(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-ish-black border border-white/15 text-ish-white text-xs sm:text-sm focus:border-ish-gold focus:outline-none"
                     >
-                      {val} م²
-                    </button>
-                  ))}
+                      <option value="received">{isAr ? 'تم الاستلام ومحضر الاستلام ساري' : 'Received & Valid'}</option>
+                      <option value="pending">{isAr ? 'قيد إنهاء إجراءات الاستلام من الجهاز' : 'Handover in progress'}</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-ish-gold mb-2">
+                      {isAr ? 'موقف رخصة البناء:' : 'Building License Status:'}
+                    </label>
+                    <select
+                      value={licenseStatus}
+                      onChange={(e) => setLicenseStatus(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-ish-black border border-white/15 text-ish-white text-xs sm:text-sm focus:border-ish-gold focus:outline-none"
+                    >
+                      <option value="no-license">{isAr ? 'أرض فضاء بدون رخصة (تتولى إشبيلية استخراجها)' : 'No license (Ishbilia extracts it)'}</option>
+                      <option value="licensed">{isAr ? 'صادر لها رخصة بناء سارية' : 'Valid license already issued'}</option>
+                      <option value="renewal">{isAr ? 'رخصة قيد التجديد أو التعديل' : 'License under renewal'}</option>
+                    </select>
+                  </div>
                 </div>
 
-                <input
-                  type="range"
-                  min="350"
-                  max="1200"
-                  step="25"
-                  value={plotArea}
-                  onChange={(e) => setPlotArea(Number(e.target.value))}
-                  className="w-full accent-ish-gold cursor-pointer"
-                />
+                {/* Row 7: Notes & Vision */}
+                <div>
+                  <label className="block text-xs font-bold text-ish-gray-light mb-2">
+                    {isAr ? 'رؤيتك وتطلعاتك الخاصة للشراكة أو أي متطلبات محددة (اختياري):' : 'Your Vision or Specific Requests (Optional):'}
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={ownerNotes}
+                    onChange={(e) => setOwnerNotes(e.target.value)}
+                    placeholder={
+                      isAr
+                        ? 'مثال: عدد الشقق المطلوبة لسكني العائلي الخاص، الرغبة في بيع الباقي، أو أي شروط خاصة بك...'
+                        : 'e.g. Desired family residences, sales preferences, or custom architectural requests...'
+                    }
+                    className="w-full px-4 py-2.5 rounded-xl bg-ish-black/80 border border-white/15 text-ish-white text-xs focus:border-ish-gold focus:outline-none leading-relaxed"
+                  />
+                </div>
               </div>
 
-              {/* Select Facade Type */}
-              <div>
-                <label className="block text-xs font-bold text-ish-gold mb-2">
-                  {isAr ? '3. طبيعة موقع والواجهة:' : '3. Facade Orientation:'}
-                </label>
-                <div className="grid grid-cols-3 gap-2.5">
-                  {[
-                    { id: 'corner', nameAr: 'ناصية بحري (شارعين)', nameEn: 'North Corner' },
-                    { id: 'front-north', nameAr: 'واجهة بحري صريحة', nameEn: 'Direct North' },
-                    { id: 'main-street', nameAr: 'شارع رئيسي واسع', nameEn: 'Main Boulevard' }
-                  ].map((f) => (
-                    <button
-                      key={f.id}
-                      type="button"
-                      onClick={() => setFacadeType(f.id)}
-                      className={`p-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer border text-center ${
-                        facadeType === f.id
-                          ? 'bg-ish-gold text-ish-black border-ish-gold shadow-md'
-                          : 'bg-ish-black/70 border-white/10 text-ish-white hover:border-ish-gold/40'
-                      }`}
-                    >
-                      {isAr ? f.nameAr : f.nameEn}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Results & Specs Display (5 cols) */}
-            <div className="lg:col-span-5 p-6 rounded-2xl bg-ish-black/95 border border-ish-gold/40 shadow-2xl flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
-                  <span className="text-xs text-ish-gray-light">
-                    {isAr ? 'المواصفات البنائية التقديرية' : 'Estimated Specifications'}
-                  </span>
-                  <span className="text-xs font-bold text-emerald-400">
-                    {isAr ? '● جاهزة للتنفيذ' : '● Ready'}
-                  </span>
-                </div>
-
-                <div className="space-y-3.5 mb-6 text-xs sm:text-sm">
-                  <div className="p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between">
-                    <span className="text-ish-gray-light">{isAr ? 'النموذج الإنشائي:' : 'Structural Typology:'}</span>
-                    <span className="font-bold text-ish-white text-end">{specs.floors}</span>
-                  </div>
-
-                  <div className="p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between">
-                    <span className="text-ish-gray-light">{isAr ? 'عدد الوحدات المقدر:' : 'Estimated Units:'}</span>
-                    <span className="font-bold text-ish-gold font-mono">{specs.estUnits}</span>
-                  </div>
-
-                  <div className="p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between">
-                    <span className="text-ish-gray-light">{isAr ? 'الحدائق الخاصة:' : 'Private Gardens:'}</span>
-                    <span className="font-bold text-ish-white">{specs.gardenArea}</span>
-                  </div>
-
-                  <div className="p-3 rounded-xl bg-ish-gold/10 border border-ish-gold/30">
-                    <span className="block text-xs font-bold text-ish-gold mb-1">
-                      {isAr ? 'صيغة الشراكة وتوزيع الوحدات:' : 'Partnership & Allocation:'}
+              {/* Right: Live Custom Dossier & Executive Meeting Summary (5 cols) */}
+              <div className="lg:col-span-5 p-6 rounded-2xl bg-ish-black/95 border border-ish-gold/40 shadow-2xl flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
+                    <span className="text-xs text-ish-gold font-bold">
+                      📋 {isAr ? 'ملف قطعة أرضك الخاصة' : 'Your Private Plot Dossier'}
                     </span>
-                    <span className="text-xs text-ish-gray-light block leading-relaxed">
-                      {isAr
-                        ? 'تُحدد نسب وتوزيع الوحدات بالتراضي التام في جلسة استشارية خاصة بما يلائم موقع القطعة وتميزها.'
-                        : 'Terms and unit allocation are tailored collaboratively in an executive consultation based on your plot uniqueness.'}
+                    <span className="text-xs font-bold text-emerald-400">
+                      {isAr ? '● مراجعة مجانية بالجهاز' : '● Free Authority Audit'}
                     </span>
                   </div>
-                </div>
-              </div>
 
-              {/* Direct WhatsApp Action */}
-              <button
-                type="button"
-                onClick={handleWhatsAppInquiry}
-                className="w-full py-3.5 px-4 rounded-xl font-bold text-xs sm:text-sm text-ish-black bg-gradient-to-r from-ish-gold via-ish-gold-light to-amber-300 hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg shadow-ish-gold/25 cursor-pointer"
-              >
-                <span>💬</span>
-                <span>{isAr ? 'طلب دراسة جدوى وتنسيق موعد ميتنج عبر واتساب' : 'Request Feasibility & Meeting on WhatsApp'}</span>
-              </button>
+                  {/* Dynamic entered summary */}
+                  <div className="space-y-3 mb-5 text-xs">
+                    <div className="p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between">
+                      <span className="text-ish-gray-light">{isAr ? 'المالك ورقم القطعة:' : 'Owner & Plot #:'}</span>
+                      <span className="font-bold text-ish-white font-mono">
+                        {plotNumber ? (isAr ? `قطعة ${plotNumber}` : `Plot ${plotNumber}`) : (isAr ? 'أدخل رقم القطعة' : 'Enter number')}
+                        {ownerName ? ` • ${ownerName}` : ''}
+                      </span>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between">
+                      <span className="text-ish-gray-light">{isAr ? 'الموقع والمساحة:' : 'Zone & Area:'}</span>
+                      <span className="font-bold text-ish-gold">
+                        {effectiveZone} {plotArea ? `• ${plotArea} م²` : (isAr ? '• أدخل المساحة' : '• Enter area')}
+                      </span>
+                    </div>
+
+                    {(facadeWidth || plotDepth) && (
+                      <div className="p-3 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between">
+                        <span className="text-ish-gray-light">{isAr ? 'الأبعاد والشارع:' : 'Dimensions & Street:'}</span>
+                        <span className="font-bold text-ish-white font-mono">
+                          {facadeWidth ? `${facadeWidth}م واجهة` : ''} {plotDepth ? `× ${plotDepth}م عمق` : ''} • {streetWidth}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Crucial Section: Zero assumptions on percentages */}
+                    <div className="p-3.5 rounded-xl bg-ish-gold/10 border border-ish-gold/30">
+                      <span className="block text-xs font-bold text-ish-gold mb-1">
+                        🤝 {isAr ? 'صيغة الشراكة وتوزيع الوحدات (مرنة بالتراضي):' : 'Partnership Formula & Unit Allocation:'}
+                      </span>
+                      <p className="text-[11px] text-ish-gray-light leading-relaxed">
+                        {isAr
+                          ? 'الموضوع مرن تماماً ولا توجد نسب مفروضة مسبقاً؛ نسب الشراكة وتوزيع الأدوار والوحدات تُحدد بالتراضي التام في جلسة استشارية خاصة (ميتنج مغلق) بما يلائم خصوصية وتميز قطعتك ورغبتك الشخصية.'
+                          : '100% flexible; joint venture formulas and unit shares are mutually agreed upon during a private VIP consultation based on your plot merits and personal requirements.'}
+                      </p>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-white/5 border border-white/5 text-[11px] text-ish-gray-light space-y-1.5">
+                      <div className="flex items-center gap-1.5 text-ish-gold font-bold">
+                        <span>✓</span>
+                        <span>{isAr ? 'دراسة اشتراطات جهاز السادات مجاناً' : 'Complimentary Sadat zoning audit'}</span>
+                      </div>
+                      <p className="text-[10.5px] text-ish-gray-light leading-relaxed">
+                        {isAr
+                          ? 'يتولى مهندسونا مراجعة الردود والنسبة البنائية الرسمية لقطعتك وإعداد مقترح معماري 3D مجاناً بالكامل.'
+                          : 'Our architects audit official setbacks and building ratios, delivering a 3D proposal free of charge.'}
+                      </p>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-white/5 border border-white/5 text-[11px] text-ish-gray-light">
+                      💰 {isAr ? 'تمويل 100% ذاتي على إشبيلية لكافة التراخيص وتكاليف البناء والتشطيب دون أي أعباء مالية عليك.' : '100% self-financed by Ishbilia with zero cost on landowner.'}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Direct Action Button */}
+                <button
+                  type="submit"
+                  className="w-full py-4 px-4 rounded-xl font-bold text-xs sm:text-sm text-ish-black bg-gradient-to-r from-ish-gold via-ish-gold-light to-amber-300 hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg shadow-ish-gold/25 cursor-pointer"
+                >
+                  <span>💬</span>
+                  <span>{isAr ? 'إرسال بيانات قطعتك وتحديد موعد ميتنج عبر واتساب' : 'Submit Plot & Schedule Meeting via WhatsApp'}</span>
+                  <span>←</span>
+                </button>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
 
         {/* 3. The 5-Stage Zero-Cost Roadmap */}
@@ -484,14 +696,15 @@ export default function LandOwners() {
               </span>
             </a>
 
-            <button
-              type="button"
-              onClick={handleWhatsAppInquiry}
+            <a
+              href="https://wa.me/201032032286?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D9%86%D8%A7%20%D9%85%D8%A7%D9%84%D9%83%20%D8%A3%D8%B1%D8%B6%20%D9%81%D9%8A%20%D9%85%D8%AF%D9%8A%D9%86%D8%A9%20%D8%A7%D9%84%D8%B3%D8%A7%D8%AF%D8%A7%D8%AA%20%D9%88%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%AF%D8%B1%D8%A7%D8%B3%D8%A9%20%D8%B4%D8%B1%D8%A7%D9%83%D8%A9%20%D9%85%D8%B9%20%D8%A5%D8%B4%D8%A8%D9%8A%D9%84%D9%8A%D8%A9"
+              target="_blank"
+              rel="noopener noreferrer"
               className="py-3.5 px-6 rounded-xl font-bold text-xs sm:text-sm text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 hover:bg-emerald-900/50 transition-all flex items-center gap-2 cursor-pointer"
             >
               <span>💬</span>
               <span>{isAr ? 'محادثة واتساب مخصصة للأراضي' : 'Direct Land WhatsApp'}</span>
-            </button>
+            </a>
 
             <Link
               href="/consultation"
