@@ -8,7 +8,7 @@ interface LeafletMapInnerProps {
   activePlot: string;
   onSelectPlot: (plotNumber: string) => void;
   zoneFilter: string;
-  mapTheme: 'voyager' | 'dark';
+  mapTheme: 'streets' | 'satellite';
 }
 
 export default function LeafletMapInner({
@@ -92,19 +92,16 @@ export default function LeafletMapInner({
     }
 
     const tileUrl =
-      mapTheme === 'dark'
-        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-        : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+      mapTheme === 'satellite'
+        ? 'https://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
+        : 'https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
 
-    const attribution =
-      mapTheme === 'dark'
-        ? '&copy; <a href="https://carto.com/">CARTO</a>'
-        : '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap';
+    const attribution = '&copy; Google Maps';
 
     const newTileLayer = L.tileLayer(tileUrl, {
       attribution,
-      maxZoom: 19,
-      subdomains: 'abcd',
+      maxZoom: 20,
+      subdomains: ['0', '1', '2', '3'],
     }).addTo(map);
 
     tileLayerRef.current = newTileLayer;

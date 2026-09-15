@@ -25,7 +25,7 @@ export default function AllPlotsMapModal() {
   const isAr = lang === 'ar';
 
   const [zoneFilter, setZoneFilter] = useState<string>('all');
-  const [mapTheme, setMapTheme] = useState<'voyager' | 'dark'>('voyager');
+  const [mapTheme, setMapTheme] = useState<'streets' | 'satellite'>('streets');
 
   // Ensure an active plot is always selected
   const currentPlot = activePlot || '198';
@@ -139,14 +139,15 @@ export default function AllPlotsMapModal() {
               </select>
             </div>
 
-            {/* Map Theme Toggle */}
+            {/* Map Theme Toggle: Streets / Satellite */}
             <button
               type="button"
-              onClick={() => setMapTheme(mapTheme === 'voyager' ? 'dark' : 'voyager')}
-              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-ish-white text-xs border border-white/10 transition-colors cursor-pointer"
-              title={isAr ? 'تبديل نمط الخريطة' : 'Toggle Map Theme'}
+              onClick={() => setMapTheme(mapTheme === 'streets' ? 'satellite' : 'streets')}
+              className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-ish-white text-xs font-bold border border-white/20 transition-all cursor-pointer flex items-center gap-1.5"
+              title={isAr ? 'التبديل بين خريطة الشوارع والقمر الصناعي' : 'Toggle Streets / Satellite'}
             >
-              {mapTheme === 'voyager' ? '🌙' : '☀️'}
+              <span>{mapTheme === 'streets' ? '🛰️' : '🗺️'}</span>
+              <span>{mapTheme === 'streets' ? (isAr ? 'قمر صناعي' : 'Satellite') : (isAr ? 'شوارع' : 'Streets')}</span>
             </button>
 
             {/* Close Button */}
