@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useLanguage } from '@/i18n/LanguageProvider';
+import { usePlotMapModal } from '@/context/PlotMapContext';
 
 interface MapLocation {
   id: string;
@@ -79,6 +80,7 @@ const mapLocations: MapLocation[] = [
 export default function GoogleMapShowcase() {
   const { lang } = useLanguage();
   const isAr = lang === 'ar';
+  const { openPlotMap } = usePlotMapModal();
 
   const [activeLocationId, setActiveLocationId] = useState<string>('hq');
 
@@ -113,16 +115,28 @@ export default function GoogleMapShowcase() {
             </div>
           </div>
 
-          <a
-            href={googleMapsExternalUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-3.5 py-1.5 rounded-xl bg-ish-gold/15 hover:bg-ish-gold/25 text-ish-gold border border-ish-gold/40 text-xs font-bold transition-all flex items-center gap-1.5 self-end sm:self-center shadow-sm cursor-pointer"
-          >
-            <span>🗺️</span>
-            <span>{isAr ? 'فتح في تطبيق Google Maps' : 'Open in Google Maps App'}</span>
-            <span>↗</span>
-          </a>
+          <div className="flex items-center gap-2 self-end sm:self-center flex-wrap">
+            <button
+              type="button"
+              onClick={() => openPlotMap(activeLocationId === 'zone-35' ? '198' : activeLocationId === 'zone-21' ? '1518' : activeLocationId === 'zone-14' ? '421' : '198')}
+              className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-ish-gold text-zinc-950 text-xs font-black transition-all flex items-center gap-1.5 shadow-md hover:scale-105 cursor-pointer border border-white/20"
+            >
+              <span>🗺️</span>
+              <span>{isAr ? 'خريطة الـ 35 قطعة (بالأسهم)' : 'Interactive Plots Map'}</span>
+              <span className="text-[10px]">⬇️</span>
+            </button>
+
+            <a
+              href={googleMapsExternalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3.5 py-1.5 rounded-xl bg-ish-gold/15 hover:bg-ish-gold/25 text-ish-gold border border-ish-gold/40 text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
+            >
+              <span>🧭</span>
+              <span>{isAr ? 'Google Maps' : 'Google Maps'}</span>
+              <span>↗</span>
+            </a>
+          </div>
         </div>
 
         {/* Location Selector Tabs */}

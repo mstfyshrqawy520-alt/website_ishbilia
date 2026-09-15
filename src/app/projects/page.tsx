@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/i18n/LanguageProvider';
 import { projectsData, Project, getProjectLocationUrl } from '@/data/projects';
 import ProjectModal from '@/components/projects/ProjectModal';
+import { usePlotMapModal } from '@/context/PlotMapContext';
 
 type FilterType =
   | 'all'
@@ -20,6 +21,7 @@ type FilterType =
 export default function ProjectsPage() {
   const { t, lang } = useLanguage();
   const isAr = lang === 'ar';
+  const { openPlotMap } = usePlotMapModal();
 
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -199,17 +201,16 @@ export default function ProjectsPage() {
                       <span>←</span>
                     </Link>
 
-                    <a
-                      href={featuredProject.googleMapsUrl || getProjectLocationUrl(featuredProject.plotNumber)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-outline text-xs sm:text-sm py-2.5 px-4 rounded-lg inline-flex items-center gap-1.5 border-ish-gold/40 text-ish-gold hover:bg-ish-gold/15 transition-all"
-                      title={isAr ? 'فتح موقع القطعة الفعلي على Google Maps' : 'Open Location on Google Maps'}
+                    <button
+                      type="button"
+                      onClick={() => openPlotMap(featuredProject.plotNumber)}
+                      className="btn-outline text-xs sm:text-sm py-2.5 px-4 rounded-lg inline-flex items-center gap-1.5 border-ish-gold/50 text-ish-gold hover:bg-ish-gold/20 transition-all cursor-pointer shadow-sm"
+                      title={isAr ? 'عرض موقع كل القطع على الخريطة مع الإشارة لهذه القطعة بسهم كبير' : 'Show on Interactive Plots Map'}
                     >
                       <span>📍</span>
-                      <span>{isAr ? 'موقع القطعة Google Maps' : 'Google Maps Pin'}</span>
-                      <span className="text-xs">↗</span>
-                    </a>
+                      <span>{isAr ? 'خريطة القطع التفاعلية' : 'Interactive Plots Map'}</span>
+                      <span className="text-xs">🗺️</span>
+                    </button>
 
                     <a
                       href={`https://wa.me/${featuredProject.salesWhatsapp}?text=${encodeURIComponent(`السلام عليكم، أود الاستفسار وحجز وحدة في ${featuredProject.title}`)}`}
@@ -419,17 +420,16 @@ export default function ProjectsPage() {
                       </Link>
 
                       <div className="flex items-center gap-1.5">
-                        <a
-                          href={project.googleMapsUrl || getProjectLocationUrl(project.plotNumber)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-ish-gold/10 hover:bg-ish-gold/25 text-ish-gold border border-ish-gold/30 text-xs font-bold transition-all shadow-sm cursor-pointer"
-                          title={isAr ? 'فتح موقع القطعة الفعلي على Google Maps' : 'Open Location on Google Maps'}
+                        <button
+                          type="button"
+                          onClick={() => openPlotMap(project.plotNumber)}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-ish-gold/15 hover:bg-ish-gold/30 text-ish-gold border border-ish-gold/40 text-xs font-bold transition-all shadow-sm cursor-pointer"
+                          title={isAr ? 'عرض موقع كل القطع على الخريطة مع الإشارة لهذه القطعة بسهم كبير' : 'Show on Interactive Plots Map'}
                         >
                           <span>📍</span>
                           <span>{isAr ? 'اللوكيشن' : 'GPS'}</span>
-                          <span className="text-[10px] opacity-70">↗</span>
-                        </a>
+                          <span className="text-[10px] opacity-80">🗺️</span>
+                        </button>
 
                         <a
                           href={`https://wa.me/${project.salesWhatsapp}?text=${encodeURIComponent(`السلام عليكم، أود الاستفسار وحجز وحدة في ${project.title}`)}`}

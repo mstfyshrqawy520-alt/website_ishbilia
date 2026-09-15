@@ -6,12 +6,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/i18n/LanguageProvider';
 import { projectsData, Project, ProjectUnit, getProjectLocationUrl } from '@/data/projects';
+import { usePlotMapModal } from '@/context/PlotMapContext';
 
 export default function ProjectDetailPage() {
   const params = useParams();
   const slug = (params?.slug as string) || '';
   const { lang } = useLanguage();
   const isAr = lang === 'ar';
+  const { openPlotMap } = usePlotMapModal();
 
   // Find project by slug or ID or plotNumber
   const project: Project =
@@ -143,18 +145,26 @@ Please provide official pricing, installment plans, and arrange a site inspectio
                   </span>
                 </div>
 
-                {/* Direct Google Maps Overlay when Location tab is active */}
+                {/* Direct Interactive Map Overlay with Big Arrow */}
                 {activeTab === 'location' && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] p-4">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-[2px] p-4 text-center gap-2.5">
+                    <button
+                      type="button"
+                      onClick={() => openPlotMap(project.plotNumber)}
+                      className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 to-ish-gold text-zinc-950 font-black text-xs sm:text-sm shadow-2xl flex items-center gap-2 hover:scale-105 transition-all border-2 border-white cursor-pointer"
+                    >
+                      <span className="text-base">🗺️</span>
+                      <span>{isAr ? 'عرض موضع كل القطع مع الإشارة لهذه القطعة بسهم كبير' : 'View on All-Plots Interactive Map'}</span>
+                      <span className="text-xs">⬇️</span>
+                    </button>
                     <a
                       href={project.googleMapsUrl || getProjectLocationUrl(project.plotNumber)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-5 py-3 rounded-xl bg-ish-gold text-ish-black font-black text-xs sm:text-sm shadow-2xl flex items-center gap-2 hover:scale-105 transition-all border border-amber-300"
+                      className="text-xs text-ish-gold hover:underline font-bold inline-flex items-center gap-1"
                     >
-                      <span>📍</span>
-                      <span>{isAr ? 'فتح موقع القطعة الفعلي على Google Maps' : 'Open Exact Plot on Google Maps'}</span>
-                      <span className="font-mono font-bold">↗</span>
+                      <span>{isAr ? 'أو افتح مباشرة في تطبيق Google Maps للتوجيه' : 'Or open in Google Maps App for Navigation'}</span>
+                      <span>↗</span>
                     </a>
                   </div>
                 )}
@@ -294,17 +304,29 @@ Please provide official pricing, installment plans, and arrange a site inspectio
                   </a>
                 </div>
 
-                {/* 📍 Feature: Direct GPS Location on Google Maps */}
-                <a
-                  href={project.googleMapsUrl || getProjectLocationUrl(project.plotNumber)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3 px-4 rounded-xl text-xs sm:text-sm font-bold text-ish-gold bg-ish-gold/15 hover:bg-ish-gold/25 border border-ish-gold/50 hover:border-ish-gold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md hover:scale-[1.01]"
-                >
-                  <span className="text-base">📍</span>
-                  <span>{isAr ? 'فتح موقع القطعة الفعلي على Google Maps (GPS)' : 'Open Exact Plot Location on Google Maps'}</span>
-                  <span className="text-xs font-mono">↗</span>
-                </a>
+                {/* 📍 Feature: Interactive Plot Map with Big Arrow + Google Maps */}
+                <div className="flex flex-col gap-2 w-full">
+                  <button
+                    type="button"
+                    onClick={() => openPlotMap(project.plotNumber)}
+                    className="w-full py-3 px-4 rounded-xl text-xs sm:text-sm font-black text-zinc-950 bg-gradient-to-r from-amber-400 to-ish-gold hover:from-amber-300 hover:to-ish-gold-light transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg hover:scale-[1.01] border border-white/20"
+                  >
+                    <span className="text-base">🗺️</span>
+                    <span>{isAr ? 'عرض موضع كل القطع على الخريطة (مع سهم كبير للقطعة)' : 'Show on All-Plots Map (with Big Arrow)'}</span>
+                    <span className="text-xs">⬇️</span>
+                  </button>
+
+                  <a
+                    href={project.googleMapsUrl || getProjectLocationUrl(project.plotNumber)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-ish-gold bg-ish-gold/10 hover:bg-ish-gold/20 border border-ish-gold/30 transition-all flex items-center justify-center gap-2 cursor-pointer text-center"
+                  >
+                    <span>🧭</span>
+                    <span>{isAr ? 'فتح التوجيه المباشر في Google Maps (GPS)' : 'Get Directions on Google Maps'}</span>
+                    <span className="text-xs font-mono">↗</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>

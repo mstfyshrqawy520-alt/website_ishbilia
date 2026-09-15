@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/i18n/LanguageProvider';
+import { usePlotMapModal } from '@/context/PlotMapContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
@@ -18,6 +19,7 @@ const navLinks = [
 
 export default function Header() {
   const { toggleLanguage, lang } = useLanguage();
+  const { openPlotMap } = usePlotMapModal();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -145,7 +147,18 @@ export default function Header() {
           </nav>
 
           {/* Actions: Refined Language Switch + CTA */}
-          <div className="flex-1 flex justify-end items-center gap-3">
+          <div className="flex-1 flex justify-end items-center gap-2 sm:gap-3">
+            {/* Interactive Plots Map Button */}
+            <button
+              type="button"
+              onClick={() => openPlotMap('198')}
+              className="hidden md:inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-ish-gold/15 hover:bg-ish-gold/25 text-ish-gold border border-ish-gold/40 shadow-sm transition-all cursor-pointer hover:scale-105"
+              title={lang === 'ar' ? 'استعراض كافة أراضي ومشروعات إشبيلية على الخريطة (35 قطعة)' : 'Ishbilia Plots Map'}
+            >
+              <span>📍</span>
+              <span>{lang === 'ar' ? 'خريطة القطع' : 'Plots Map'}</span>
+            </button>
+
             {/* Consultation CTA Button - Gold Pill with Calendar Icon */}
             <Link
               href="/consultation"
@@ -284,6 +297,19 @@ export default function Header() {
                 transition={{ delay: 0.35 }}
                 className="w-full max-w-xs mt-4 pt-4 border-t border-white/10 flex flex-col gap-3"
               >
+                {/* Mobile Plots Map Button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    openPlotMap('198');
+                    setMobileOpen(false);
+                  }}
+                  className="w-full py-2.5 text-center text-xs font-bold rounded-full bg-ish-gold/20 text-ish-gold border border-ish-gold/50 flex items-center justify-center gap-2"
+                >
+                  <span>📍</span>
+                  <span>{lang === 'ar' ? 'خريطة كل القطع التفاعلية (35 قطعة)' : 'Interactive Plots Map (35 Plots)'}</span>
+                </button>
+
                 <Link
                   href="/consultation"
                   onClick={() => setMobileOpen(false)}

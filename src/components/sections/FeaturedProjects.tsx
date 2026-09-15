@@ -7,6 +7,7 @@ import { useLanguage } from '@/i18n/LanguageProvider';
 import { useScrollReveal } from '@/lib/motion/useScrollAnimation';
 import { projectsData, Project, getProjectLocationUrl } from '@/data/projects';
 import ProjectModal from '@/components/projects/ProjectModal';
+import { usePlotMapModal } from '@/context/PlotMapContext';
 
 type FilterType = 'all' | 'apartments' | 'gardens' | 'commercial';
 
@@ -14,6 +15,7 @@ export default function FeaturedProjects() {
   const { t, lang } = useLanguage();
   const isAr = lang === 'ar';
   const sectionRef = useScrollReveal();
+  const { openPlotMap } = usePlotMapModal();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
 
@@ -229,18 +231,17 @@ export default function FeaturedProjects() {
                       <span>{isAr ? 'معاينة' : 'Tour'}</span>
                     </a>
 
-                    {/* Direct Real Google Maps Location Link */}
-                    <a
-                      href={project.googleMapsUrl || getProjectLocationUrl(project.plotNumber)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full sm:w-auto py-2.5 px-3 rounded-xl text-xs font-bold text-ish-gold bg-ish-gold/10 hover:bg-ish-gold/25 border border-ish-gold/40 transition-all flex items-center justify-center gap-1 shadow-sm hover:scale-105 cursor-pointer"
-                      title={isAr ? 'فتح موقع القطعة الفعلي على Google Maps' : 'Open Location on Google Maps'}
+                    {/* Interactive Plot Map with Big Arrow for all 35 Plots */}
+                    <button
+                      type="button"
+                      onClick={() => openPlotMap(project.plotNumber)}
+                      className="w-full sm:w-auto py-2.5 px-3 rounded-xl text-xs font-bold text-ish-gold bg-ish-gold/15 hover:bg-ish-gold/30 border border-ish-gold/50 transition-all flex items-center justify-center gap-1 shadow-sm hover:scale-105 cursor-pointer"
+                      title={isAr ? 'عرض موقع كل القطع على الخريطة مع الإشارة لهذه القطعة بسهم كبير' : 'Show on Interactive Plots Map'}
                     >
                       <span>📍</span>
                       <span>{isAr ? 'اللوكيشن' : 'GPS'}</span>
-                      <span className="text-[10px] opacity-70">↗</span>
-                    </a>
+                      <span className="text-[10px] opacity-80">🗺️</span>
+                    </button>
                   </div>
                 </div>
               </div>
