@@ -39,7 +39,7 @@ export default function FeaturedProjects() {
     return true;
   });
 
-  const displayedProjects = filteredProjects.slice(0, 6);
+  const displayedProjects = filteredProjects.slice(0, 3);
 
   return (
     <section className="section-rhythm section-secondary relative scroll-mt-28 w-full overflow-hidden" id="projects-section">
