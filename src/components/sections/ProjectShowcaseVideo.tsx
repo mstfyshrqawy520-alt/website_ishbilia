@@ -15,7 +15,7 @@ export default function ProjectShowcaseVideo() {
         <div ref={sectionRef} className="text-center mb-10 reveal-up">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-ish-gold/10 border border-ish-gold/30 text-ish-gold text-xs sm:text-sm font-semibold mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-            <span>{isAr ? 'جولة حية من الموقع' : 'Live Site Tour'}</span>
+            <span>{isAr ? 'تصوير جوي من الموقع' : 'Aerial View from Site'}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-ish-white mb-4 font-headline">
@@ -28,8 +28,8 @@ export default function ProjectShowcaseVideo() {
 
           <p className="text-ish-gray text-base sm:text-lg max-w-2xl mx-auto font-body">
             {isAr
-              ? 'شاهد بنفسك جودة التنفيذ والتشطيب في أحد أبرز مشاريع إشبيلية بمدينة السادات.'
-              : 'See for yourself the execution quality and finishing of one of Ishbilia\'s flagship projects in Sadat City.'}
+              ? 'شاهد بنفسك الموقع الاستثنائي للقطعة والمنطقة المحيطة بها من تصوير جوي حقيقي.'
+              : 'See for yourself the exceptional plot location and surrounding area from real aerial footage.'}
           </p>
         </div>
 
@@ -62,7 +62,7 @@ export default function ProjectShowcaseVideo() {
           <div className="absolute top-4 start-4 z-10">
             <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md text-white font-bold border border-white/20 shadow-lg">
               <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-              {isAr ? 'من موقع المشروع' : 'From Project Site'}
+              {isAr ? 'تصوير جوي حقيقي' : 'Real Aerial Footage'}
             </span>
           </div>
 
@@ -73,7 +73,7 @@ export default function ProjectShowcaseVideo() {
                 {isAr ? 'قطعة 1518 - المنطقة 35' : 'Plot 1518 - Zone 35'}
               </h3>
               <p className="text-white/70 text-xs sm:text-sm drop-shadow-md">
-                {isAr ? 'مدينة السادات • تم التسليم ✅' : 'Sadat City • Delivered ✅'}
+                {isAr ? 'مدينة السادات • موقع استثنائي 📍' : 'Sadat City • Exceptional Location 📍'}
               </p>
             </div>
           </div>
