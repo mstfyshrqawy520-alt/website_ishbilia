@@ -28,15 +28,31 @@ export default function ProjectDetailPage() {
   const [activeTab, setActiveTab] = useState<'facade' | 'ground' | 'typical' | 'location'>('facade');
   const [selectedUnit, setSelectedUnit] = useState<ProjectUnit | null>(project.units[0] || null);
 
-  // Calculator State for this Project
-  const [calcDownPayment, setCalcDownPayment] = useState<number>(20);
+  // Flexible Payment Plan State for this Project
+  const [calcDownPaymentMode, setCalcDownPaymentMode] = useState<'percent' | 'amount'>('percent');
+  const [calcDownPaymentPct, setCalcDownPaymentPct] = useState<number>(20);
+  const [calcCustomAmount, setCalcCustomAmount] = useState<string>('');
   const [calcPeriodMonths, setCalcPeriodMonths] = useState<number>(36);
+  const [customArea, setCustomArea] = useState<number>(selectedUnit ? selectedUnit.area : 150);
+  const [targetMonthly, setTargetMonthly] = useState<string>('');
+  const [clientName, setClientName] = useState<string>('');
+  const [clientNotes, setClientNotes] = useState<string>('');
+
   const basePricePerMeter = 16500; // Estimated baseline price per m² in Sadat premier zones
-  const activeArea = selectedUnit ? selectedUnit.area : 150;
+  const activeArea = customArea || (selectedUnit ? selectedUnit.area : 150);
   const totalEstimatedPrice = activeArea * basePricePerMeter;
-  const downPaymentAmount = Math.round(totalEstimatedPrice * (calcDownPayment / 100));
-  const remainingAmount = totalEstimatedPrice - downPaymentAmount;
-  const quarterlyInstallment = Math.round(remainingAmount / (calcPeriodMonths / 3));
+
+  const parsedCustomAmount = parseInt(calcCustomAmount.replace(/[^0-9]/g, ''), 10) || 0;
+  const resolvedDownPaymentAmount =
+    calcDownPaymentMode === 'percent'
+      ? Math.round(totalEstimatedPrice * (calcDownPaymentPct / 100))
+      : (parsedCustomAmount > 0 ? parsedCustomAmount : Math.round(totalEstimatedPrice * 0.2));
+
+  const resolvedDownPaymentPct = Math.round((resolvedDownPaymentAmount / totalEstimatedPrice) * 100);
+  const remainingAmount = Math.max(0, totalEstimatedPrice - resolvedDownPaymentAmount);
+  const totalQuarters = Math.max(1, Math.round(calcPeriodMonths / 3));
+  const quarterlyInstallment = Math.round(remainingAmount / totalQuarters);
+  const monthlyEquivalent = Math.round(remainingAmount / Math.max(1, calcPeriodMonths));
 
   const currentImage =
     activeTab === 'facade'
@@ -46,6 +62,12 @@ export default function ProjectDetailPage() {
       : activeTab === 'typical'
       ? project.typicalFloorImage || project.facadeImage
       : project.locationImage || project.facadeImage;
+
+  const getCleanWhatsappUrl = (phone: string, text: string) => {
+    const raw = (phone || '201016144927').replace(/[^0-9]/g, '');
+    const cleanPhone = raw.startsWith('20') ? raw : raw.startsWith('0') ? `2${raw}` : `20${raw}`;
+    return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
+  };
 
   const handleUnitBookingWhatsApp = (unit: ProjectUnit) => {
     const message = isAr
@@ -64,7 +86,7 @@ export default function ProjectDetailPage() {
 🧭 *Orientation:* ${unit.orientationEn}
 Please provide official pricing, installment plans, and arrange a site inspection.`;
 
-    window.open(`https://wa.me/20${project.salesWhatsapp}?text=${encodeURIComponent(message)}`, '_blank');
+    window.open(getCleanWhatsappUrl(project.salesWhatsapp, message), '_blank');
   };
 
   return (
@@ -231,11 +253,12 @@ Please provide official pricing, installment plans, and arrange a site inspectio
               {/* Action Buttons */}
               <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row gap-3">
                 <a
-                  href={`https://wa.me/20${project.salesWhatsapp}?text=${encodeURIComponent(
+                  href={getCleanWhatsappUrl(
+                    project.salesWhatsapp,
                     isAr
                       ? `السلام عليكم، أرغب في حجز ميعاد معاينة لمشروع ${project.title} والاستفسار عن الوحدات المتاحة.`
                       : `Hello, I want to schedule a site inspection for ${project.titleEn} and inquire about available units.`
-                  )}`}
+                  )}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 py-3.5 px-4 rounded-xl font-bold text-xs sm:text-sm text-ish-black bg-gradient-to-r from-ish-gold via-ish-gold-light to-amber-300 hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg shadow-ish-gold/20 cursor-pointer"
@@ -455,54 +478,172 @@ Please provide official pricing, installment plans, and arrange a site inspectio
         </section>
       )}
 
-      {/* 5. Interactive Payment Calculator Tailored for This Project */}
-      <section className="section-container relative z-10 mb-16">
-        <div className="glass-card rounded-3xl border border-ish-gold/30 p-6 sm:p-10 shadow-2xl bg-gradient-to-br from-ish-gold/10 via-ish-black to-ish-black">
+      {/* 5. Flexible Tailored Payment Planner - VIP Lead Generation */}
+      <section className="section-container relative z-10 mb-16" id="flexible-payment-plan">
+        <div className="glass-card rounded-3xl border border-ish-gold/40 p-6 sm:p-10 shadow-2xl bg-gradient-to-br from-ish-gold/10 via-ish-black to-ish-black">
           <div className="text-center max-w-2xl mx-auto mb-8">
-            <span className="text-xs font-bold text-ish-gold uppercase tracking-wider block mb-1">
-              {isAr ? 'حاسبة خطط السداد التقديرية' : 'Estimated Payment Plan Calculator'}
-            </span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-ish-gold/15 border border-ish-gold/40 text-ish-gold text-xs font-semibold mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-ish-gold animate-ping" />
+              <span>{isAr ? 'تخصيص خطة سداد مرنة' : 'Custom Flexible Payment Plan'}</span>
+            </div>
             <h2 className="text-xl sm:text-3xl font-bold text-ish-white font-headline">
-              {isAr ? `احسب قسط وحدتك في ${project.title}` : `Calculate Installments for ${project.titleEn}`}
+              {isAr ? `خطط سداد ميسرة ومفصلة في ${project.title}` : `Tailor Your Payment Plan in ${project.titleEn}`}
             </h2>
-            <p className="text-xs text-ish-gray-light mt-1">
-              {isAr ? 'مقدمات مرنة تبدأ من 15% وفترات سداد ميسرة تصل إلى 48 شهراً بدون فوائد بنكية معقدة.' : 'Flexible down payments from 15% with installment plans up to 48 months.'}
+            <p className="text-xs sm:text-sm text-ish-gray-light mt-2 leading-relaxed">
+              {isAr
+                ? 'حدد إمكانياتك وتفضيلاتك بحرية كاملة، وستقوم الإدارة المالية بإعداد أنسب جدول أقساط وإرساله مباشرة لك عبر واتساب.'
+                : 'Freely specify your preferred budget and timeline, and our finance team will send your tailored installment schedule via WhatsApp.'}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* Inputs (7 cols) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Inputs Column (7 cols) */}
             <div className="lg:col-span-7 space-y-6">
-              {/* Down payment selection */}
-              <div>
-                <label className="block text-xs font-bold text-ish-gold mb-2">
-                  {isAr ? 'نسبة المقدم المرغوبة:' : 'Down Payment Percentage:'}
-                </label>
-                <div className="grid grid-cols-4 gap-2">
-                  {[15, 20, 25, 30].map((pct) => (
-                    <button
-                      key={pct}
-                      type="button"
-                      onClick={() => setCalcDownPayment(pct)}
-                      className={`py-3 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
-                        calcDownPayment === pct
-                          ? 'bg-ish-gold text-ish-black border-ish-gold font-black shadow-md'
-                          : 'bg-ish-black/80 border-white/10 text-ish-white hover:border-ish-gold/40'
-                      }`}
-                    >
-                      {pct}%
-                    </button>
-                  ))}
+              {/* 1. Area / Unit selection */}
+              <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-ish-gold flex items-center gap-1.5">
+                    <span>📐</span>
+                    <span>{isAr ? 'المساحة المرغوبة:' : 'Desired Area:'}</span>
+                  </label>
+                  <span className="text-xs font-bold text-ish-white font-mono bg-ish-gold/10 px-2.5 py-0.5 rounded-full border border-ish-gold/30">
+                    {activeArea} م²
+                  </span>
+                </div>
+
+                {project.units && project.units.length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {project.units.map((u) => (
+                      <button
+                        key={u.id}
+                        type="button"
+                        onClick={() => {
+                          setSelectedUnit(u);
+                          setCustomArea(u.area);
+                        }}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
+                          selectedUnit?.id === u.id && customArea === u.area
+                            ? 'bg-ish-gold text-ish-black border-ish-gold font-bold shadow-sm'
+                            : 'bg-ish-black/70 border-white/10 text-ish-gray hover:text-ish-white hover:border-ish-gold/30'
+                        }`}
+                      >
+                        {isAr ? u.name : u.nameEn} ({u.area}م²)
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+
+                <div className="flex items-center gap-3 pt-1">
+                  <span className="text-[11px] text-ish-gray shrink-0">{isAr ? 'تعديل يدوي:' : 'Custom Area:'}</span>
+                  <input
+                    type="range"
+                    min="100"
+                    max="260"
+                    step="5"
+                    value={activeArea}
+                    onChange={(e) => setCustomArea(Number(e.target.value))}
+                    className="w-full accent-ish-gold h-1.5 bg-white/10 rounded-lg cursor-pointer"
+                  />
+                  <span className="text-xs text-ish-white font-mono shrink-0">{activeArea}م²</span>
                 </div>
               </div>
 
-              {/* Installment period selection */}
-              <div>
-                <label className="block text-xs font-bold text-ish-gold mb-2">
-                  {isAr ? 'مدة التقسيط:' : 'Installment Duration:'}
-                </label>
-                <div className="grid grid-cols-3 gap-2">
+              {/* 2. Down payment selection (Mode toggle) */}
+              <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-ish-gold flex items-center gap-1.5">
+                    <span>💰</span>
+                    <span>{isAr ? 'المقدم المتاح أو المقترح:' : 'Proposed Down Payment:'}</span>
+                  </label>
+                  {/* Mode switcher */}
+                  <div className="inline-flex p-0.5 rounded-lg bg-black/50 border border-white/10 text-[11px]">
+                    <button
+                      type="button"
+                      onClick={() => setCalcDownPaymentMode('percent')}
+                      className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
+                        calcDownPaymentMode === 'percent'
+                          ? 'bg-ish-gold text-ish-black font-bold'
+                          : 'text-ish-gray hover:text-ish-white'
+                      }`}
+                    >
+                      {isAr ? 'نسبة مئوية (%)' : 'Percentage (%)'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCalcDownPaymentMode('amount')}
+                      className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
+                        calcDownPaymentMode === 'amount'
+                          ? 'bg-ish-gold text-ish-black font-bold'
+                          : 'text-ish-gray hover:text-ish-white'
+                      }`}
+                    >
+                      {isAr ? 'مبلغ كاش (ج.م)' : 'Amount (EGP)'}
+                    </button>
+                  </div>
+                </div>
+
+                {calcDownPaymentMode === 'percent' ? (
+                  <div className="space-y-2.5">
+                    <div className="grid grid-cols-5 gap-2">
+                      {[15, 20, 25, 30, 40].map((pct) => (
+                        <button
+                          key={pct}
+                          type="button"
+                          onClick={() => setCalcDownPaymentPct(pct)}
+                          className={`py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                            calcDownPaymentPct === pct
+                              ? 'bg-ish-gold text-ish-black border-ish-gold font-black shadow-md'
+                              : 'bg-ish-black/80 border-white/10 text-ish-white hover:border-ish-gold/40'
+                          }`}
+                        >
+                          {pct}%
+                        </button>
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-3 pt-1">
+                      <span className="text-[11px] text-ish-gray shrink-0">{isAr ? 'نسبة مخصصة:' : 'Custom %:'}</span>
+                      <input
+                        type="range"
+                        min="10"
+                        max="60"
+                        step="5"
+                        value={calcDownPaymentPct}
+                        onChange={(e) => setCalcDownPaymentPct(Number(e.target.value))}
+                        className="w-full accent-ish-gold h-1.5 bg-white/10 rounded-lg cursor-pointer"
+                      />
+                      <span className="text-xs text-ish-gold font-bold font-mono shrink-0">{calcDownPaymentPct}%</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <input
+                      type="text"
+                      value={calcCustomAmount}
+                      onChange={(e) => setCalcCustomAmount(e.target.value)}
+                      placeholder={isAr ? 'اكتب المبلغ المتاح معك مقدماً (مثال: 400,000 ج.م)' : 'Enter your available down payment (e.g., 400,000)'}
+                      className="w-full px-4 py-2.5 rounded-xl bg-ish-black border border-white/15 text-ish-white text-xs placeholder:text-ish-gray/50 focus:border-ish-gold focus:outline-none"
+                    />
+                    <p className="text-[11px] text-ish-gray mt-1.5">
+                      {isAr ? '💡 سيتم تفصيل الأقساط والمتبقي بناءً على هذا المبلغ بالضبط.' : 'Installments will be structured around this exact sum.'}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* 3. Installment Duration */}
+              <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-ish-gold flex items-center gap-1.5">
+                    <span>⏳</span>
+                    <span>{isAr ? 'مدة التقسيط المرغوبة:' : 'Preferred Duration:'}</span>
+                  </label>
+                  <span className="text-xs font-bold text-ish-white font-mono bg-ish-gold/10 px-2.5 py-0.5 rounded-full border border-ish-gold/30">
+                    {calcPeriodMonths} {isAr ? 'شهراً' : 'Months'} ({(calcPeriodMonths / 12).toFixed(1).replace('.0', '')} {isAr ? 'سنوات' : 'Yrs'})
+                  </span>
+                </div>
+                <div className="grid grid-cols-4 gap-2">
                   {[
+                    { months: 12, labelAr: '12 شهراً (سنة)', labelEn: '12 Months' },
                     { months: 24, labelAr: '24 شهراً (سنتان)', labelEn: '24 Months' },
                     { months: 36, labelAr: '36 شهراً (3 سنوات)', labelEn: '36 Months' },
                     { months: 48, labelAr: '48 شهراً (4 سنوات)', labelEn: '48 Months' },
@@ -511,7 +652,7 @@ Please provide official pricing, installment plans, and arrange a site inspectio
                       key={p.months}
                       type="button"
                       onClick={() => setCalcPeriodMonths(p.months)}
-                      className={`py-3 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                      className={`py-2 px-1 rounded-xl text-xs font-bold border transition-all cursor-pointer text-center ${
                         calcPeriodMonths === p.months
                           ? 'bg-ish-gold text-ish-black border-ish-gold font-black shadow-md'
                           : 'bg-ish-black/80 border-white/10 text-ish-white hover:border-ish-gold/40'
@@ -523,50 +664,161 @@ Please provide official pricing, installment plans, and arrange a site inspectio
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 text-xs text-ish-gray-light leading-relaxed">
-                💡 {isAr ? 'يتم تخصيص خطة السداد بدقة في ميتنج التعاقد وفقاً للوحدة المختارة مع إمكانية دفعات سنوية مرنة تخفض قيمة الأقساط الشهرية.' : 'Payment schedules are finalized in our VIP meeting with optional annual balloon payments reducing monthly rates.'}
+              {/* 4. Target Monthly & Contact (Optional) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-bold text-ish-gray-light mb-1">
+                    {isAr ? '🎯 القسط الشهري المستهدف (اختياري):' : 'Target Monthly Budget (Optional):'}
+                  </label>
+                  <input
+                    type="text"
+                    value={targetMonthly}
+                    onChange={(e) => setTargetMonthly(e.target.value)}
+                    placeholder={isAr ? 'مثال: 18,000 ج.م' : 'e.g. 18,000 EGP'}
+                    className="w-full px-3.5 py-2 rounded-xl bg-ish-black border border-white/10 text-ish-white text-xs placeholder:text-ish-gray/50 focus:border-ish-gold focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-ish-gray-light mb-1">
+                    {isAr ? '👤 الاسم الكريم (اختياري):' : 'Your Name (Optional):'}
+                  </label>
+                  <input
+                    type="text"
+                    value={clientName}
+                    onChange={(e) => setClientName(e.target.value)}
+                    placeholder={isAr ? 'اكتب اسمك لتخصيص الطلب' : 'Enter your name'}
+                    className="w-full px-3.5 py-2 rounded-xl bg-ish-black border border-white/10 text-ish-white text-xs placeholder:text-ish-gray/50 focus:border-ish-gold focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* 5. Custom Notes (Optional) */}
+              <div>
+                <input
+                  type="text"
+                  value={clientNotes}
+                  onChange={(e) => setClientNotes(e.target.value)}
+                  placeholder={isAr ? '📝 أي متطلبات خاصة؟ (مثلاً: رغبة في خصم كاش، دفعات سنوية، موعد تسليم)' : 'Any special requirements? (e.g., cash discount, annual payments)'}
+                  className="w-full px-3.5 py-2 rounded-xl bg-ish-black border border-white/10 text-ish-white text-xs placeholder:text-ish-gray/50 focus:border-ish-gold focus:outline-none"
+                />
               </div>
             </div>
 
-            {/* Results Display (5 cols) */}
-            <div className="lg:col-span-5 p-6 rounded-2xl bg-ish-black border border-ish-gold/40 shadow-2xl space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-white/10 text-xs">
-                <span className="text-ish-gray-light">{isAr ? 'المساحة المحسوبة:' : 'Calculated Area:'}</span>
-                <span className="font-bold text-ish-white font-mono">{activeArea} م²</span>
+            {/* Results & Action Display (5 cols) - Private VIP Card (Calculations sent directly to WhatsApp) */}
+            <div className="lg:col-span-5 rounded-2xl bg-gradient-to-b from-ish-black via-zinc-950 to-ish-black border border-ish-gold/40 p-6 sm:p-7 shadow-2xl relative overflow-hidden space-y-5">
+              <div className="absolute -top-16 -end-16 w-36 h-36 bg-ish-gold/15 rounded-full blur-2xl pointer-events-none" />
+
+              {/* Status Header */}
+              <div className="flex items-center gap-3 pb-4 border-b border-white/10">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ish-gold to-amber-500/80 flex items-center justify-center text-2xl shadow-lg shadow-ish-gold/20 shrink-0">
+                  🔒
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold tracking-wider uppercase text-ish-gold block">
+                    {isAr ? 'دراسة سداد حصرية' : 'Exclusive Plan Study'}
+                  </span>
+                  <h3 className="text-base sm:text-lg font-bold text-ish-white font-headline">
+                    {isAr ? 'خطتك المالية المخصصة جاهزة' : 'Your Custom Plan is Ready'}
+                  </h3>
+                </div>
               </div>
 
-              <div className="flex items-center justify-between pb-3 border-b border-white/10 text-xs">
-                <span className="text-ish-gray-light">{isAr ? 'قيمة المقدم التقديرية:' : 'Estimated Down Payment:'}</span>
-                <span className="font-bold text-ish-gold font-mono text-base">
-                  {downPaymentAmount.toLocaleString()} ج.م
-                </span>
+              {/* Selected Criteria Summary */}
+              <div className="space-y-2.5 text-xs bg-white/[0.02] p-4 rounded-xl border border-white/5">
+                <div className="flex items-center justify-between text-ish-gray">
+                  <span>{isAr ? 'المشروع:' : 'Project:'}</span>
+                  <strong className="text-ish-white font-medium">{project.title} (قطعة {project.plotNumber})</strong>
+                </div>
+                <div className="flex items-center justify-between text-ish-gray">
+                  <span>{isAr ? 'المساحة المحددة:' : 'Selected Area:'}</span>
+                  <strong className="text-ish-white font-mono">{activeArea} م²</strong>
+                </div>
+                <div className="flex items-center justify-between text-ish-gray">
+                  <span>{isAr ? 'المقدم المختار:' : 'Proposed Down Payment:'}</span>
+                  <strong className="text-ish-gold font-bold">
+                    {calcDownPaymentMode === 'percent'
+                      ? `${calcDownPaymentPct}% من القيمة`
+                      : (parsedCustomAmount > 0 ? `${parsedCustomAmount.toLocaleString()} ج.م` : 'مقدم مرن')}
+                  </strong>
+                </div>
+                <div className="flex items-center justify-between text-ish-gray">
+                  <span>{isAr ? 'مدة التقسيط:' : 'Duration:'}</span>
+                  <strong className="text-emerald-400 font-bold">{calcPeriodMonths} شهراً ({(calcPeriodMonths / 12).toFixed(1).replace('.0', '')} سنوات)</strong>
+                </div>
+                {targetMonthly.trim() ? (
+                  <div className="flex items-center justify-between text-ish-gray">
+                    <span>{isAr ? 'القسط المستهدف:' : 'Target Monthly:'}</span>
+                    <strong className="text-ish-white font-mono">{targetMonthly} ج.م</strong>
+                  </div>
+                ) : null}
               </div>
 
-              <div className="flex items-center justify-between pb-3 border-b border-white/10 text-xs">
-                <span className="text-ish-gray-light">{isAr ? 'القسط الربع سنوي:' : 'Quarterly Installment:'}</span>
-                <span className="font-bold text-emerald-400 font-mono text-lg">
-                  {quarterlyInstallment.toLocaleString()} ج.م
-                </span>
+              {/* VIP Confidentiality & Direct WhatsApp Delivery Note */}
+              <div className="p-3.5 rounded-xl bg-ish-gold/[0.08] border border-ish-gold/25 text-[11px] text-ish-gray-light leading-relaxed space-y-2">
+                <div className="flex items-start gap-2">
+                  <span className="text-ish-gold text-sm shrink-0">✨</span>
+                  <p>
+                    {isAr
+                      ? 'حرصاً على أعلى درجات المرونة وتقديم أقوى خصم كاش وتسهيلات بدون فوائد بنكية، يتم إرسال جدول الأقساط وتفاصيل الحسبة الرسمية مباشرة إليك عبر واتساب من الإدارة المالية.'
+                      : 'To provide maximum flexibility and exclusive discounts without compounding bank interests, your official schedule and calculation are delivered directly via WhatsApp by our finance management.'}
+                  </p>
+                </div>
+                <div className="grid grid-cols-2 gap-2 pt-1 text-[10px] text-ish-gold font-semibold">
+                  <span className="flex items-center gap-1">✓ بدون فوائد بنكية</span>
+                  <span className="flex items-center gap-1">✓ دفعات سنوية مرنة</span>
+                  <span className="flex items-center gap-1">✓ خصومات خاصة للكاش</span>
+                  <span className="flex items-center gap-1">✓ تعاقد رسمي موثق</span>
+                </div>
               </div>
 
-              <div className="text-[11px] text-ish-gray text-center pt-1">
-                {isAr ? 'القسط الشهري المكافئ تقريباً:' : 'Approximate Monthly Equivalent:'}{' '}
-                <strong className="text-ish-white font-mono">{Math.round(quarterlyInstallment / 3).toLocaleString()} ج.م</strong>
-              </div>
-
+              {/* WhatsApp Trigger Button with complete calculations payload */}
               <a
-                href={`https://wa.me/20${project.salesWhatsapp}?text=${encodeURIComponent(
+                href={getCleanWhatsappUrl(
+                  project.salesWhatsapp,
                   isAr
-                    ? `السلام عليكم، أرغب في تأكيد خطة سداد لمشروع ${project.title}: مساحة ${activeArea}م² بمقدم ${calcDownPayment}% وتقسيط على ${calcPeriodMonths} شهراً.`
-                    : `Hello, I want to confirm payment plan for ${project.titleEn}: Area ${activeArea}m², Down payment ${calcDownPayment}%, over ${calcPeriodMonths} months.`
-                )}`}
+                    ? `*طلب دراسة وتأكيد خطة سداد مخصصة — شركة إشبيلية للتطوير العقاري*
+🏛️ *المشروع:* ${project.title} (قطعة ${project.plotNumber} - ${project.zone})
+${clientName.trim() ? `👤 *اسم العميل:* ${clientName.trim()}\n` : ''}📐 *المساحة المطلوبة:* ${activeArea} م² ${selectedUnit ? `(وحدة: ${selectedUnit.name})` : ''}
+💰 *المقدم المقترح:* ${calcDownPaymentMode === 'percent' ? `${calcDownPaymentPct}% (~${resolvedDownPaymentAmount.toLocaleString('ar-EG')} ج.م)` : `${resolvedDownPaymentAmount.toLocaleString('ar-EG')} ج.م (${resolvedDownPaymentPct}%)`}
+⏳ *مدة التقسيط المطلوبة:* ${calcPeriodMonths} شهراً (${(calcPeriodMonths / 12).toFixed(1)} سنة)
+${targetMonthly.trim() ? `🎯 *القسط الشهري المستهدف للعميل:* ${targetMonthly.trim()} ج.م\n` : ''}${clientNotes.trim() ? `📝 *ملاحظات خاصة:* ${clientNotes.trim()}\n` : ''}
+───────────────
+📊 *الحسبة التقديرية المحسوبة للطلب (تفاصيل الإدارة):*
+• إجمالي القيمة التقديرية: ${totalEstimatedPrice.toLocaleString('ar-EG')} ج.م
+• قيمة المقدم المحسوب: ${resolvedDownPaymentAmount.toLocaleString('ar-EG')} ج.م
+• المبلغ المتبقي للتقسيط: ${remainingAmount.toLocaleString('ar-EG')} ج.م
+• القسط الربع سنوي المحسوب: ${quarterlyInstallment.toLocaleString('ar-EG')} ج.م
+• القسط الشهري المكافئ: ${monthlyEquivalent.toLocaleString('ar-EG')} ج.م
+───────────────
+أرجو من الإدارة المالية موافاتي بجدول الأقساط النهائي المعتمد وأقوى خصم كاش متاح وتنسيق موعد للمعاينة.`
+                    : `*Tailored Payment Plan Request — Ishbilia Real Estate*
+🏛️ *Project:* ${project.titleEn} (Plot ${project.plotNumber} - ${project.zoneEn})
+${clientName.trim() ? `👤 *Client Name:* ${clientName.trim()}\n` : ''}📐 *Requested Area:* ${activeArea} m² ${selectedUnit ? `(Unit: ${selectedUnit.nameEn})` : ''}
+💰 *Proposed Down Payment:* ${calcDownPaymentMode === 'percent' ? `${calcDownPaymentPct}% (~${resolvedDownPaymentAmount.toLocaleString()} EGP)` : `${resolvedDownPaymentAmount.toLocaleString()} EGP (${resolvedDownPaymentPct}%)`}
+⏳ *Installment Duration:* ${calcPeriodMonths} Months (${(calcPeriodMonths / 12).toFixed(1)} Years)
+${targetMonthly.trim() ? `🎯 *Target Monthly:* ${targetMonthly.trim()} EGP\n` : ''}${clientNotes.trim() ? `📝 *Notes:* ${clientNotes.trim()}\n` : ''}
+───────────────
+📊 *Calculated Estimates (Internal Breakdown):*
+• Total Est. Price: ${totalEstimatedPrice.toLocaleString()} EGP
+• Down Payment: ${resolvedDownPaymentAmount.toLocaleString()} EGP
+• Remaining to Finance: ${remainingAmount.toLocaleString()} EGP
+• Est. Quarterly Installment: ${quarterlyInstallment.toLocaleString()} EGP
+• Approx. Monthly Equivalent: ${monthlyEquivalent.toLocaleString()} EGP
+───────────────
+Please provide the finalized approved schedule, applicable cash discount, and arrange a site consultation.`
+                )}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3.5 px-4 rounded-xl font-bold text-xs text-ish-black bg-ish-gold hover:bg-ish-gold-light transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer mt-2"
+                className="w-full py-4 px-5 rounded-xl font-bold text-xs sm:text-sm text-ish-black bg-gradient-to-r from-ish-gold via-ish-gold-light to-amber-300 hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-xl shadow-ish-gold/25 cursor-pointer"
               >
-                <span>💬</span>
-                <span>{isAr ? 'تأكيد خطة السداد وحجز الوحدة' : 'Confirm Plan via WhatsApp'}</span>
+                <span className="text-base">💬</span>
+                <span>{isAr ? 'استلم الحسبة وجدول الأقساط المعتمد على واتساب' : 'Get Official Plan on WhatsApp'}</span>
+                <span>←</span>
               </a>
+
+              <p className="text-center text-[10px] text-ish-gray/60">
+                {isAr ? '🔒 خدمة فورية ومباشرة من الإدارة المالية — بدون أي التزام مسبق' : '🔒 Direct & instant service from finance management — no obligations'}
+              </p>
             </div>
           </div>
         </div>
