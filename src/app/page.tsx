@@ -1,12 +1,14 @@
 'use client';
 
 import Hero from '@/components/sections/Hero';
+import UrgencyTicker from '@/components/sections/UrgencyTicker';
 import AboutPreview from '@/components/sections/AboutPreview';
 import SadatDistrictsExplorer from '@/components/sections/SadatDistrictsExplorer';
 import FeaturedProjects from '@/components/sections/FeaturedProjects';
 import SmartUnitFinder from '@/components/sections/SmartUnitFinder';
 import ProjectShowcaseVideo from '@/components/sections/ProjectShowcaseVideo';
 import LiveProgressTracker from '@/components/sections/LiveProgressTracker';
+import BrochureDownloadCTA from '@/components/sections/BrochureDownloadCTA';
 import ServicesGrid from '@/components/sections/ServicesGrid';
 import WhyIshbilia from '@/components/sections/WhyIshbilia';
 import LandOwners from '@/components/sections/LandOwners';
@@ -18,6 +20,9 @@ export default function HomePage() {
     <>
       {/* 1. Hero Section (100% Protected & Preserved) */}
       <Hero />
+
+      {/* 1.5. Live Urgency & Limited Opportunities Ticker */}
+      <UrgencyTicker />
 
       <SectionDivider />
 
@@ -48,6 +53,11 @@ export default function HomePage() {
 
       {/* 5. Live Construction Progress Tracker (1518: 100%, 1490: 90%, 810: 80%) */}
       <LiveProgressTracker />
+
+      <SectionDivider />
+
+      {/* 5.5. Architectural Brochure & Master Plans PDF Download Lead Magnet */}
+      <BrochureDownloadCTA />
 
       <SectionDivider />
 

@@ -223,10 +223,26 @@ export default function FeaturedProjects() {
                       href={whatsappDirectBooking}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full sm:w-auto py-2.5 px-3.5 rounded-xl text-xs font-bold text-emerald-400 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 transition-all flex items-center justify-center gap-1.5"
+                      className="w-full sm:w-auto py-2.5 px-3 rounded-xl text-xs font-bold text-emerald-400 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 transition-all flex items-center justify-center gap-1"
                     >
                       <span>💬</span>
                       <span>{isAr ? 'معاينة' : 'Tour'}</span>
+                    </a>
+
+                    {/* GPS Location Pin Request */}
+                    <a
+                      href={`https://wa.me/${project.salesWhatsapp}?text=${encodeURIComponent(
+                        isAr
+                          ? `السلام عليكم، أود استلام موقع (Google Maps Pin) لمشروع ${project.title} (${project.zone}) لمعاينة القطعة ميدانياً.`
+                          : `Hello, please send the Google Maps location for ${project.titleEn} (${project.zoneEn}).`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto py-2.5 px-3 rounded-xl text-xs font-bold text-ish-gold bg-ish-gold/10 hover:bg-ish-gold/20 border border-ish-gold/30 transition-all flex items-center justify-center gap-1"
+                      title={isAr ? 'إرسال اللوكيشن على Google Maps' : 'Send Google Maps Location'}
+                    >
+                      <span>📍</span>
+                      <span>{isAr ? 'اللوكيشن' : 'GPS'}</span>
                     </a>
                   </div>
                 </div>

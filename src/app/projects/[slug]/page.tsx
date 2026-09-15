@@ -251,29 +251,48 @@ Please provide official pricing, installment plans, and arrange a site inspectio
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row gap-3">
+              <div className="pt-4 border-t border-white/10 flex flex-col gap-2.5">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a
+                    href={getCleanWhatsappUrl(
+                      project.salesWhatsapp,
+                      isAr
+                        ? `السلام عليكم، أرغب في حجز ميعاد معاينة لمشروع ${project.title} والاستفسار عن الوحدات المتاحة.`
+                        : `Hello, I want to schedule a site inspection for ${project.titleEn} and inquire about available units.`
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 py-3.5 px-4 rounded-xl font-bold text-xs sm:text-sm text-ish-black bg-gradient-to-r from-ish-gold via-ish-gold-light to-amber-300 hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg shadow-ish-gold/20 cursor-pointer"
+                  >
+                    <span>💬</span>
+                    <span>{isAr ? 'حجز معاينة ميدانية عبر واتساب' : 'Schedule Site Visit via WhatsApp'}</span>
+                  </a>
+
+                  <a
+                    href={`tel:${project.salesPhone}`}
+                    className="py-3.5 px-5 rounded-xl font-bold text-xs sm:text-sm text-ish-white bg-white/5 border border-white/20 hover:border-ish-gold transition-all flex items-center justify-center gap-2 cursor-pointer font-mono"
+                    dir="ltr"
+                  >
+                    <span>📞</span>
+                    <span>{project.salesPhone}</span>
+                  </a>
+                </div>
+
+                {/* 📍 Feature: Send GPS Location on Google Maps */}
                 <a
                   href={getCleanWhatsappUrl(
                     project.salesWhatsapp,
                     isAr
-                      ? `السلام عليكم، أرغب في حجز ميعاد معاينة لمشروع ${project.title} والاستفسار عن الوحدات المتاحة.`
-                      : `Hello, I want to schedule a site inspection for ${project.titleEn} and inquire about available units.`
+                      ? `السلام عليكم، أود استلام إحداثيات وموقع (Google Maps Location Pin) لمشروع ${project.title} (قطعة ${project.plotNumber} - ${project.zone}) لمعاينة القطعة ميدانياً على الطبيعة.`
+                      : `Hello, please send the Google Maps GPS location pin for ${project.titleEn} (Plot ${project.plotNumber} - ${project.zoneEn}) for an on-site visit.`
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 py-3.5 px-4 rounded-xl font-bold text-xs sm:text-sm text-ish-black bg-gradient-to-r from-ish-gold via-ish-gold-light to-amber-300 hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg shadow-ish-gold/20 cursor-pointer"
+                  className="w-full py-3 px-4 rounded-xl text-xs font-bold text-ish-gold bg-ish-gold/10 hover:bg-ish-gold/20 border border-ish-gold/40 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:scale-[1.01]"
                 >
-                  <span>💬</span>
-                  <span>{isAr ? 'حجز معاينة ميدانية عبر واتساب' : 'Schedule Site Visit via WhatsApp'}</span>
-                </a>
-
-                <a
-                  href={`tel:${project.salesPhone}`}
-                  className="py-3.5 px-5 rounded-xl font-bold text-xs sm:text-sm text-ish-white bg-white/5 border border-white/20 hover:border-ish-gold transition-all flex items-center justify-center gap-2 cursor-pointer font-mono"
-                  dir="ltr"
-                >
-                  <span>📞</span>
-                  <span>{project.salesPhone}</span>
+                  <span className="text-sm">📍</span>
+                  <span>{isAr ? 'أرسل لي موقع القطعة على Google Maps لمعاينتها بنفسي' : 'Send Project Location on Google Maps (GPS)'}</span>
+                  <span className="text-[10px] text-ish-gray-light">({isAr ? 'عبر واتساب' : 'via WhatsApp'})</span>
                 </a>
               </div>
             </div>
