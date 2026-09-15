@@ -92,10 +92,15 @@ export default function Header() {
               id="header-logo"
               onClick={() => setMobileOpen(false)}
             >
-              <div className="w-10 h-10 rounded-full bg-ish-gold/15 border border-ish-gold/40 flex items-center justify-center text-ish-gold shrink-0 group-hover:scale-105 transition-transform">
-                <svg className="w-5 h-5 fill-none stroke-current stroke-[1.8]" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.5m-15 10.5V10.5m0 0L12 5.25l7.5 5.25" />
-                </svg>
+              <div className="relative w-10 h-10 rounded-full overflow-hidden border border-ish-gold/40 shrink-0 group-hover:scale-105 transition-transform">
+                <Image
+                  src="/images/logo.jpg"
+                  alt="Ishbilia Logo"
+                  fill
+                  className="object-cover"
+                  sizes="40px"
+                  priority
+                />
               </div>
               <div className="flex flex-col">
                 <span className="text-ish-gold font-bold text-lg sm:text-xl tracking-wide leading-tight group-hover:text-ish-gold-light transition-colors">
