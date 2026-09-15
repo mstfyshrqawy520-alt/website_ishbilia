@@ -5,6 +5,7 @@ import AboutPreview from '@/components/sections/AboutPreview';
 import SadatDistrictsExplorer from '@/components/sections/SadatDistrictsExplorer';
 import FeaturedProjects from '@/components/sections/FeaturedProjects';
 import SmartUnitFinder from '@/components/sections/SmartUnitFinder';
+import ProjectShowcaseVideo from '@/components/sections/ProjectShowcaseVideo';
 import LiveProgressTracker from '@/components/sections/LiveProgressTracker';
 import ServicesGrid from '@/components/sections/ServicesGrid';
 import WhyIshbilia from '@/components/sections/WhyIshbilia';
@@ -22,6 +23,11 @@ export default function HomePage() {
 
       {/* 2. About Ishbilia Showcase (20 Years, Pillars & Project 1518 Frame) */}
       <AboutPreview />
+
+      <SectionDivider />
+
+      {/* 2.5. Project 1518 Video Showcase - Autoplay */}
+      <ProjectShowcaseVideo />
 
       <SectionDivider />
 
