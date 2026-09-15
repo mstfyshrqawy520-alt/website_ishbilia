@@ -39,6 +39,8 @@ export default function FeaturedProjects() {
     return true;
   });
 
+  const displayedProjects = filteredProjects.slice(0, 6);
+
   return (
     <section className="section-rhythm section-secondary relative scroll-mt-28 w-full overflow-hidden" id="projects-section">
       {/* Background Ambience */}
@@ -98,7 +100,7 @@ export default function FeaturedProjects() {
 
         {/* 2. Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-          {filteredProjects.map((project) => {
+          {displayedProjects.map((project) => {
             const totalUnits = project.units.length;
             const minArea = project.units.length > 0 ? Math.min(...project.units.map((u) => u.area)) : 140;
             const maxArea = project.units.length > 0 ? Math.max(...project.units.map((u) => u.area)) : 220;
@@ -237,9 +239,13 @@ export default function FeaturedProjects() {
         <div className="mt-12 text-center">
           <Link
             href="/projects"
-            className="btn-outline rounded-full inline-flex items-center gap-2 text-sm sm:text-base font-bold px-8 py-3 hover:border-ish-gold transition-all"
+            className="btn-gold rounded-full inline-flex items-center gap-2 text-sm sm:text-base font-bold px-8 py-3.5 shadow-xl hover:scale-105 transition-all"
           >
-            <span>{isAr ? 'استعراض كافة المشروعات والمخططات التفصيلية' : 'Explore All Projects & Detailed Blueprints'}</span>
+            <span>
+              {isAr
+                ? `استعراض كافة المشروعات والمخططات التفصيلية (${projectsData.length} مشروع)`
+                : `Explore All Projects & Blueprints (${projectsData.length} Projects)`}
+            </span>
             <span>←</span>
           </Link>
         </div>

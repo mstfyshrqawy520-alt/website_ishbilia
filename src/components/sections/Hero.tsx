@@ -12,6 +12,10 @@ export default function Hero() {
   const parallaxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && !window.location.hash) {
+      window.scrollTo(0, 0);
+    }
+
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;
 
@@ -28,7 +32,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative min-h-[760px] lg:h-screen lg:min-h-[780px] lg:max-h-[1080px] w-full flex flex-col justify-between items-center overflow-hidden isolate"
+      className="relative min-h-screen h-screen w-full flex flex-col justify-between items-center overflow-hidden isolate"
       id="hero"
     >
       {/* 1. Luminous Architectural Sunset Palace Background */}
@@ -41,6 +45,7 @@ export default function Hero() {
           alt="شركة إشبيلية للتطوير العقاري - مشروعات معمارية فاخرة"
           fill
           priority
+          loading="eager"
           className="object-cover object-center brightness-[0.92] contrast-[1.05]"
           sizes="100vw"
         />
@@ -116,12 +121,12 @@ export default function Hero() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="flex flex-row items-center justify-center gap-3.5 sm:gap-5 mb-10"
+          className="flex flex-wrap sm:flex-nowrap items-center justify-center gap-3 sm:gap-5 mb-8 sm:mb-10 w-full px-2"
         >
           {/* Primary CTA (Right in RTL): Discover Projects */}
           <Link
             href="/projects"
-            className="btn-gold rounded-full text-sm sm:text-base font-bold px-7 sm:px-9 py-3.5 shadow-xl shadow-black/60 flex items-center justify-center gap-2 hover:scale-105 transition-all duration-300"
+            className="btn-gold rounded-full text-xs sm:text-base font-bold px-6 sm:px-9 py-3 sm:py-3.5 shadow-xl shadow-black/60 flex items-center justify-center gap-2 hover:scale-105 transition-all duration-300 w-full sm:w-auto"
             id="hero-cta-primary"
           >
             <span>{isAr ? 'اكتشف مشروعاتنا' : 'Explore Our Projects'}</span>
@@ -133,7 +138,7 @@ export default function Hero() {
           {/* Secondary CTA (Left in RTL): Develop Your Land */}
           <Link
             href="/#land-owners"
-            className="rounded-full text-sm sm:text-base font-bold px-7 sm:px-9 py-3.5 bg-black/45 hover:bg-black/70 backdrop-blur-md border border-white/35 hover:border-ish-gold text-white shadow-xl shadow-black/60 flex items-center justify-center transition-all duration-300 hover:scale-105"
+            className="rounded-full text-xs sm:text-base font-bold px-6 sm:px-9 py-3 sm:py-3.5 bg-black/45 hover:bg-black/70 backdrop-blur-md border border-white/35 hover:border-ish-gold text-white shadow-xl shadow-black/60 flex items-center justify-center transition-all duration-300 hover:scale-105 w-full sm:w-auto"
             id="hero-cta-secondary"
           >
             <span>{isAr ? 'طوّر أرضك معنا' : 'Develop Your Land'}</span>
@@ -145,7 +150,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.75 }}
-          className="w-full max-w-4xl mx-auto rounded-2xl bg-black/40 backdrop-blur-xl border border-ish-gold/30 px-4 sm:px-8 py-4 shadow-2xl shadow-black/80 flex flex-wrap items-center justify-between sm:justify-around gap-4"
+          className="w-full max-w-4xl mx-auto rounded-2xl bg-black/40 backdrop-blur-xl border border-ish-gold/30 px-3 sm:px-8 py-3.5 sm:py-4 shadow-2xl shadow-black/80 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"
         >
           {/* Stat 1: +2000 رخصة معتمدة */}
           <div className="flex items-center gap-2.5 sm:gap-3">

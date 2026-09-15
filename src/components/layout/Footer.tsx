@@ -63,32 +63,39 @@ export default function Footer() {
 
   const sadatDistricts = [
     {
+      nameAr: 'المنطقة 22 (المنطقة الذهبية)',
+      nameEn: 'Zone 22 (The Golden Zone)',
+      badgeAr: 'مشروع 1164 • 1152 • 1064',
+      badgeEn: 'Plots 1164, 1152 & 1064',
+      href: '/projects',
+    },
+    {
+      nameAr: 'الروضة والريحان (محور الريادة)',
+      nameEn: 'Al-Rawda & Al-Rayhan Corridor',
+      badgeAr: 'مشروع 578 • 584 • 637',
+      badgeEn: 'Plots 578, 584 & 637',
+      href: '/projects',
+    },
+    {
+      nameAr: 'المنطقة 35 (واجهة الجامعة ومول جولدن ليف)',
+      nameEn: 'Zone 35 (University Frontage)',
+      badgeAr: 'مشروع 198 • 190 • 162',
+      badgeEn: 'Plots 198, 190 & 162',
+      href: '/projects',
+    },
+    {
+      nameAr: 'المنطقة 29 (المحور الجامعي والأكسدة)',
+      nameEn: 'Zone 29 (University & Oxidation)',
+      badgeAr: 'مشروع 1297 • 1307 • 1518',
+      badgeEn: 'Plots 1297, 1307 & 1518',
+      href: '/projects',
+    },
+    {
       nameAr: 'المنطقة 21 (حي النخبة والفيلات)',
       nameEn: 'Zone 21 (Elite & Villas)',
-      badgeAr: 'مشروع 1518 • 1205',
-      badgeEn: 'Project 1518 & 1205',
+      badgeAr: 'مشروع 696 • 659 • 638',
+      badgeEn: 'Plots 696, 659 & 638',
       href: '/projects',
-    },
-    {
-      nameAr: 'المنطقة 29 (الحي الجامعي)',
-      nameEn: 'Zone 29 (University Hub)',
-      badgeAr: 'أعلى عائد استثماري',
-      badgeEn: 'Top Investment Yield',
-      href: '/projects',
-    },
-    {
-      nameAr: 'المنطقة 14 (الحي السكني الخدمي)',
-      nameEn: 'Zone 14 (Integrated Corridor)',
-      badgeAr: 'أقساط حتى 48 شهر',
-      badgeEn: 'Up to 48 Months',
-      href: '/projects',
-    },
-    {
-      nameAr: 'المحور المركزي (جنة مول)',
-      nameEn: 'Central Axis (Ganna Mall)',
-      badgeAr: 'المقر الإداري الرئيسي',
-      badgeEn: 'HQ & VIP Lounge',
-      href: '/contact',
     },
   ];
 
