@@ -12,6 +12,7 @@ import BrochureDownloadCTA from '@/components/sections/BrochureDownloadCTA';
 import ServicesGrid from '@/components/sections/ServicesGrid';
 import WhyIshbilia from '@/components/sections/WhyIshbilia';
 import LandOwners from '@/components/sections/LandOwners';
+import GoogleMapShowcase from '@/components/sections/GoogleMapShowcase';
 import ContactCTA from '@/components/sections/ContactCTA';
 import SectionDivider from '@/components/ui/SectionDivider';
 
@@ -73,6 +74,13 @@ export default function HomePage() {
 
       {/* 8. Land Owners Hub & Joint Venture */}
       <LandOwners />
+
+      <SectionDivider />
+
+      {/* 8.5. Live Interactive Google Maps - HQ & Sadat City Developments */}
+      <section className="section-container relative z-10 mb-16" id="google-maps-location">
+        <GoogleMapShowcase />
+      </section>
 
       <SectionDivider />
 

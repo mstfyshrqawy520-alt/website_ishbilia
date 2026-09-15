@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/i18n/LanguageProvider';
 import SectionDivider from '@/components/ui/SectionDivider';
+import GoogleMapShowcase from '@/components/sections/GoogleMapShowcase';
 
 type InquiryType = 'residential' | 'land' | 'commercial' | 'engineering';
 
@@ -914,6 +915,11 @@ export default function ContactPage() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Live Interactive Google Maps Embed with HQ & Project Zone Switcher */}
+          <div className="mt-10 max-w-5xl mx-auto w-full">
+            <GoogleMapShowcase />
           </div>
         </div>
       </section>
