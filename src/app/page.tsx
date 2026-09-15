@@ -4,6 +4,7 @@ import Hero from '@/components/sections/Hero';
 import AboutPreview from '@/components/sections/AboutPreview';
 import SadatDistrictsExplorer from '@/components/sections/SadatDistrictsExplorer';
 import FeaturedProjects from '@/components/sections/FeaturedProjects';
+import SmartUnitFinder from '@/components/sections/SmartUnitFinder';
 import LiveProgressTracker from '@/components/sections/LiveProgressTracker';
 import ServicesGrid from '@/components/sections/ServicesGrid';
 import WhyIshbilia from '@/components/sections/WhyIshbilia';
@@ -31,6 +32,11 @@ export default function HomePage() {
 
       {/* 4. Featured Projects & Unit Selector with WhatsApp Booking */}
       <FeaturedProjects />
+
+      <SectionDivider />
+
+      {/* 4.5. Smart Unit Finder - Interactive Tool */}
+      <SmartUnitFinder />
 
       <SectionDivider />
 
