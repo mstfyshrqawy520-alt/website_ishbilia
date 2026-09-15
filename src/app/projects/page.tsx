@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '@/i18n/LanguageProvider';
-import { projectsData, Project } from '@/data/projects';
+import { projectsData, Project, getProjectLocationUrl } from '@/data/projects';
 import ProjectModal from '@/components/projects/ProjectModal';
 
 type FilterType =
@@ -198,6 +198,18 @@ export default function ProjectsPage() {
                       <span>{isAr ? 'استعراض المخططات والوحدات' : 'Explore Floor Plans & Units'}</span>
                       <span>←</span>
                     </Link>
+
+                    <a
+                      href={featuredProject.googleMapsUrl || getProjectLocationUrl(featuredProject.plotNumber)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-outline text-xs sm:text-sm py-2.5 px-4 rounded-lg inline-flex items-center gap-1.5 border-ish-gold/40 text-ish-gold hover:bg-ish-gold/15 transition-all"
+                      title={isAr ? 'فتح موقع القطعة الفعلي على Google Maps' : 'Open Location on Google Maps'}
+                    >
+                      <span>📍</span>
+                      <span>{isAr ? 'موقع القطعة Google Maps' : 'Google Maps Pin'}</span>
+                      <span className="text-xs">↗</span>
+                    </a>
 
                     <a
                       href={`https://wa.me/${featuredProject.salesWhatsapp}?text=${encodeURIComponent(`السلام عليكم، أود الاستفسار وحجز وحدة في ${featuredProject.title}`)}`}
@@ -406,18 +418,32 @@ export default function ProjectsPage() {
                         <span className="rtl:rotate-180">→</span>
                       </Link>
 
-                      <a
-                        href={`https://wa.me/${project.salesWhatsapp}?text=${encodeURIComponent(`السلام عليكم، أود الاستفسار وحجز وحدة في ${project.title}`)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 text-xs font-bold transition-all"
-                        title={isAr ? 'تواصل مع مسؤول المبيعات' : 'WhatsApp Sales'}
-                      >
-                        <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.699c.971.53 1.777.818 2.802.818l.006-.001c3.18 0 5.767-2.586 5.768-5.766.001-3.182-2.584-5.803-5.78-5.803zm3.385 8.163c-.145.411-.744.757-1.026.786-.282.029-.636.145-2.093-.455-1.859-.766-3.056-2.659-3.149-2.784-.093-.125-.757-1.009-.757-1.923 0-.914.478-1.364.648-1.541.171-.177.374-.221.499-.221.125 0 .25.002.359.007.114.006.268-.043.418.322.156.375.53 1.294.576 1.388.046.094.077.204.015.328-.062.125-.093.203-.187.312-.093.109-.197.243-.281.326-.093.094-.191.196-.082.383.109.187.483.797 1.037 1.291.714.636 1.316.833 1.503.926.187.094.296.078.405-.047.109-.125.468-.544.593-.731.125-.187.25-.156.421-.094.171.062 1.09.514 1.277.608.187.094.312.141.358.219.046.078.046.453-.099.864z" />
-                        </svg>
-                        <span>{isAr ? 'واتساب' : 'WhatsApp'}</span>
-                      </a>
+                      <div className="flex items-center gap-1.5">
+                        <a
+                          href={project.googleMapsUrl || getProjectLocationUrl(project.plotNumber)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-ish-gold/10 hover:bg-ish-gold/25 text-ish-gold border border-ish-gold/30 text-xs font-bold transition-all shadow-sm cursor-pointer"
+                          title={isAr ? 'فتح موقع القطعة الفعلي على Google Maps' : 'Open Location on Google Maps'}
+                        >
+                          <span>📍</span>
+                          <span>{isAr ? 'اللوكيشن' : 'GPS'}</span>
+                          <span className="text-[10px] opacity-70">↗</span>
+                        </a>
+
+                        <a
+                          href={`https://wa.me/${project.salesWhatsapp}?text=${encodeURIComponent(`السلام عليكم، أود الاستفسار وحجز وحدة في ${project.title}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 text-xs font-bold transition-all"
+                          title={isAr ? 'تواصل مع مسؤول المبيعات' : 'WhatsApp Sales'}
+                        >
+                          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.699c.971.53 1.777.818 2.802.818l.006-.001c3.18 0 5.767-2.586 5.768-5.766.001-3.182-2.584-5.803-5.78-5.803zm3.385 8.163c-.145.411-.744.757-1.026.786-.282.029-.636.145-2.093-.455-1.859-.766-3.056-2.659-3.149-2.784-.093-.125-.757-1.009-.757-1.923 0-.914.478-1.364.648-1.541.171-.177.374-.221.499-.221.125 0 .25.002.359.007.114.006.268-.043.418.322.156.375.53 1.294.576 1.388.046.094.077.204.015.328-.062.125-.093.203-.187.312-.093.109-.197.243-.281.326-.093.094-.191.196-.082.383.109.187.483.797 1.037 1.291.714.636 1.316.833 1.503.926.187.094.296.078.405-.047.109-.125.468-.544.593-.731.125-.187.25-.156.421-.094.171.062 1.09.514 1.277.608.187.094.312.141.358.219.046.078.046.453-.099.864z" />
+                          </svg>
+                          <span>{isAr ? 'واتساب' : 'WhatsApp'}</span>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 );

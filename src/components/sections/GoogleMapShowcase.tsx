@@ -10,6 +10,7 @@ interface MapLocation {
   typeAr: string;
   typeEn: string;
   query: string;
+  directUrl?: string;
   addressAr: string;
   addressEn: string;
   badge: string;
@@ -38,6 +39,7 @@ const mapLocations: MapLocation[] = [
     typeAr: 'مشروعات سكنية فاخرة',
     typeEn: 'Luxury Residential',
     query: 'المنطقة 21 مدينة السادات',
+    directUrl: 'https://www.google.com/maps/place/@30.401066359537644,30.52534984199647',
     addressAr: 'المنطقة 21، بالقرب من المحور المركزي والخدمات، مدينة السادات',
     addressEn: 'Zone 21, near Central Axis and core services, Sadat City',
     badge: '📍 مشروعات حية',
@@ -51,6 +53,7 @@ const mapLocations: MapLocation[] = [
     typeAr: 'موقع دابل فيس استراتيجي',
     typeEn: 'Strategic Double-Face Corner',
     query: 'جامعة مدينة السادات',
+    directUrl: 'https://www.google.com/maps/place/@30.40558632060105,30.543658629288966',
     addressAr: 'المنطقة 35، مباشرة أمام بوابة جامعة مدينة السادات وبجوار مول جولدن ليف',
     addressEn: 'Zone 35, directly facing Sadat University Gate & Golden Leaf Mall',
     badge: '🎓 واجهة الجامعة',
@@ -59,11 +62,12 @@ const mapLocations: MapLocation[] = [
   },
   {
     id: 'zone-14',
-    nameAr: 'مواقع مشروعات المنطقة 14',
+    nameAr: 'مواقع مشروعات المنطقة 14 (قطعة 421 و 584)',
     nameEn: 'Zone 14 Projects & Developments',
     typeAr: 'أحياء راقية متكاملة المرافق',
     typeEn: 'Premier Residential Districts',
     query: 'المنطقة 14 مدينة السادات',
+    directUrl: 'https://www.google.com/maps/place/@30.395363004766864,30.495304067558834',
     addressAr: 'المنطقة 14، خطوات من المدارس والمحاور الرئيسية، مدينة السادات',
     addressEn: 'Zone 14, steps from schools & primary avenues, Sadat City',
     badge: '🌿 حي النرجس والصفوة',
@@ -84,9 +88,9 @@ export default function GoogleMapShowcase() {
     active.query
   )}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
 
-  const googleMapsExternalUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    active.query
-  )}`;
+  const googleMapsExternalUrl =
+    active.directUrl ||
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(active.query)}`;
 
   const cleanWhatsappNumber = '201010722349';
 

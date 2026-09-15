@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/i18n/LanguageProvider';
-import { projectsData, Project, ProjectUnit } from '@/data/projects';
+import { projectsData, Project, ProjectUnit, getProjectLocationUrl } from '@/data/projects';
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -142,6 +142,22 @@ Please provide official pricing, installment plans, and arrange a site inspectio
                     {isAr ? 'كود زلازل B350' : 'B350 Seismic Code'}
                   </span>
                 </div>
+
+                {/* Direct Google Maps Overlay when Location tab is active */}
+                {activeTab === 'location' && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px] p-4">
+                    <a
+                      href={project.googleMapsUrl || getProjectLocationUrl(project.plotNumber)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-5 py-3 rounded-xl bg-ish-gold text-ish-black font-black text-xs sm:text-sm shadow-2xl flex items-center gap-2 hover:scale-105 transition-all border border-amber-300"
+                    >
+                      <span>📍</span>
+                      <span>{isAr ? 'فتح موقع القطعة الفعلي على Google Maps' : 'Open Exact Plot on Google Maps'}</span>
+                      <span className="font-mono font-bold">↗</span>
+                    </a>
+                  </div>
+                )}
               </div>
 
               {/* View Selector Tabs */}
@@ -278,21 +294,16 @@ Please provide official pricing, installment plans, and arrange a site inspectio
                   </a>
                 </div>
 
-                {/* 📍 Feature: Send GPS Location on Google Maps */}
+                {/* 📍 Feature: Direct GPS Location on Google Maps */}
                 <a
-                  href={getCleanWhatsappUrl(
-                    project.salesWhatsapp,
-                    isAr
-                      ? `السلام عليكم، أود استلام إحداثيات وموقع (Google Maps Location Pin) لمشروع ${project.title} (قطعة ${project.plotNumber} - ${project.zone}) لمعاينة القطعة ميدانياً على الطبيعة.`
-                      : `Hello, please send the Google Maps GPS location pin for ${project.titleEn} (Plot ${project.plotNumber} - ${project.zoneEn}) for an on-site visit.`
-                  )}
+                  href={project.googleMapsUrl || getProjectLocationUrl(project.plotNumber)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3 px-4 rounded-xl text-xs font-bold text-ish-gold bg-ish-gold/10 hover:bg-ish-gold/20 border border-ish-gold/40 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:scale-[1.01]"
+                  className="w-full py-3 px-4 rounded-xl text-xs sm:text-sm font-bold text-ish-gold bg-ish-gold/15 hover:bg-ish-gold/25 border border-ish-gold/50 hover:border-ish-gold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md hover:scale-[1.01]"
                 >
-                  <span className="text-sm">📍</span>
-                  <span>{isAr ? 'أرسل لي موقع القطعة على Google Maps لمعاينتها بنفسي' : 'Send Project Location on Google Maps (GPS)'}</span>
-                  <span className="text-[10px] text-ish-gray-light">({isAr ? 'عبر واتساب' : 'via WhatsApp'})</span>
+                  <span className="text-base">📍</span>
+                  <span>{isAr ? 'فتح موقع القطعة الفعلي على Google Maps (GPS)' : 'Open Exact Plot Location on Google Maps'}</span>
+                  <span className="text-xs font-mono">↗</span>
                 </a>
               </div>
             </div>

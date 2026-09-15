@@ -38,10 +38,205 @@ export interface Project {
   locationHighlightsEn: string[];
   salesPhone: string;
   salesWhatsapp: string;
+  googleMapsUrl?: string;
+  latitude?: number;
+  longitude?: number;
   units: ProjectUnit[];
 }
 
-export const projectsData: Project[] = [
+export interface PlotLocationData {
+  mapsUrl: string;
+  lat: number;
+  lng: number;
+}
+
+export const plotLocationsData: Record<string, PlotLocationData> = {
+  '190': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.404335284308647,30.542269804257387',
+    lat: 30.40433528,
+    lng: 30.5422698,
+  },
+  '1297': {
+    mapsUrl: 'https://maps.app.goo.gl/XXkV9v9Z4qXX7f4U9?g_st=ac',
+    lat: 30.404543,
+    lng: 30.522331,
+  },
+  '1301': {
+    mapsUrl: 'https://maps.app.goo.gl/BjZ7eJy6sWoLRcCM7',
+    lat: 30.404785,
+    lng: 30.522646,
+  },
+  '1413': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.402329637405412,30.525985404248303',
+    lat: 30.40232964,
+    lng: 30.5259854,
+  },
+  '1483': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.400329965285977,30.522626597956965',
+    lat: 30.40032997,
+    lng: 30.5226266,
+  },
+  '638': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.39522078947298,30.519550532487614',
+    lat: 30.39522079,
+    lng: 30.51955053,
+  },
+  '1164': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.399340730999047,30.518392420266576',
+    lat: 30.39934073,
+    lng: 30.51839242,
+  },
+  '1152': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.40011866950386,30.51746933105071',
+    lat: 30.40011867,
+    lng: 30.51746933,
+  },
+  '810': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.39241300455798,30.51136930000694',
+    lat: 30.392413,
+    lng: 30.5113693,
+  },
+  '1518': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.401066359537644,30.52534984199647',
+    lat: 30.40106636,
+    lng: 30.52534984,
+  },
+  '814': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.39269884159403,30.51169453052786',
+    lat: 30.39269884,
+    lng: 30.51169453,
+  },
+  '198': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.40558632060105,30.543658629288966',
+    lat: 30.40558632,
+    lng: 30.54365863,
+  },
+  '235': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.406836296697154,30.54510211226871',
+    lat: 30.4068363,
+    lng: 30.54510211,
+  },
+  '1165': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.399192042358578,30.518616716815426',
+    lat: 30.39919204,
+    lng: 30.51861672,
+  },
+  '1220': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.401071126575825,30.52025912589329',
+    lat: 30.40107113,
+    lng: 30.52025913,
+  },
+  '1317': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.40442542336392,30.524228145567214',
+    lat: 30.40442542,
+    lng: 30.52422815,
+  },
+  '1307': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.405221842667352,30.523288955958044',
+    lat: 30.40522184,
+    lng: 30.52328896,
+  },
+  '1167': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.399294627872127,30.51901487599778',
+    lat: 30.39929463,
+    lng: 30.51901488,
+  },
+  '1064': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.398534319849045,30.519717098356796',
+    lat: 30.39853432,
+    lng: 30.5197171,
+  },
+  '1341': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.403788421607263,30.522743741790194',
+    lat: 30.40378842,
+    lng: 30.52274374,
+  },
+  '1371': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.401884914512813,30.52317720509968',
+    lat: 30.40188491,
+    lng: 30.52317721,
+  },
+  '421': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.395363004766864,30.495304067558834',
+    lat: 30.395363,
+    lng: 30.49530407,
+  },
+  '623': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.40052253903674,30.494768991724754',
+    lat: 30.40052254,
+    lng: 30.49476899,
+  },
+  '1500': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.406802818713647,30.487449978743673',
+    lat: 30.40680282,
+    lng: 30.48744998,
+  },
+  '584': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.399285174794876,30.49674780262689',
+    lat: 30.39928517,
+    lng: 30.4967478,
+  },
+  '60': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.40149430187148,30.547385635898344',
+    lat: 30.4014943,
+    lng: 30.54738564,
+  },
+  '1490': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.400951449103722,30.522890573723487',
+    lat: 30.40095145,
+    lng: 30.52289057,
+  },
+  '1445': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.404200338242635,30.491005287276092',
+    lat: 30.40420034,
+    lng: 30.49100529,
+  },
+  '578': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.398660234671667,30.496927815048345',
+    lat: 30.39866023,
+    lng: 30.49692782,
+  },
+  '696': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.392624264405274,30.5143675707549',
+    lat: 30.39262426,
+    lng: 30.51436757,
+  },
+  '1372': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.402029931649526,30.522924700189503',
+    lat: 30.40202993,
+    lng: 30.5229247,
+  },
+  '1254': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.403566962596525,30.491762740129936',
+    lat: 30.40356696,
+    lng: 30.49176274,
+  },
+  '659': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.395485491773474,30.517205555931042',
+    lat: 30.39548549,
+    lng: 30.51720556,
+  },
+  '1378': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.400516559816882,30.4883000595583',
+    lat: 30.40051656,
+    lng: 30.48830006,
+  },
+  '1488': {
+    mapsUrl: 'https://www.google.com/maps/place/@30.40081385349643,30.52276266207326',
+    lat: 30.40081385,
+    lng: 30.52276266,
+  },
+};
+
+export function getProjectLocationUrl(plotNumber: string): string {
+  const loc = plotLocationsData[plotNumber];
+  if (loc && loc.mapsUrl) {
+    return loc.mapsUrl;
+  }
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`مدينة السادات قطعة ${plotNumber}`)}`;
+}
+
+const rawProjectsData: Project[] = [
   // ==========================================
   // المنطقة 35 (Zone 35) - واجهة الجامعة ومول جولدن ليف
   // ==========================================
@@ -2632,3 +2827,17 @@ export const projectsData: Project[] = [
     units: []
   }
 ];
+
+export const projectsData: Project[] = rawProjectsData.map((p) => {
+  const loc = plotLocationsData[p.plotNumber];
+  return {
+    ...p,
+    googleMapsUrl:
+      loc?.mapsUrl ||
+      `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+        `مدينة السادات قطعة ${p.plotNumber}`
+      )}`,
+    latitude: loc?.lat,
+    longitude: loc?.lng,
+  };
+});

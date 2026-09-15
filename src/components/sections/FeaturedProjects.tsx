@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/i18n/LanguageProvider';
 import { useScrollReveal } from '@/lib/motion/useScrollAnimation';
-import { projectsData, Project } from '@/data/projects';
+import { projectsData, Project, getProjectLocationUrl } from '@/data/projects';
 import ProjectModal from '@/components/projects/ProjectModal';
 
 type FilterType = 'all' | 'apartments' | 'gardens' | 'commercial';
@@ -229,20 +229,17 @@ export default function FeaturedProjects() {
                       <span>{isAr ? 'معاينة' : 'Tour'}</span>
                     </a>
 
-                    {/* GPS Location Pin Request */}
+                    {/* Direct Real Google Maps Location Link */}
                     <a
-                      href={`https://wa.me/${project.salesWhatsapp}?text=${encodeURIComponent(
-                        isAr
-                          ? `السلام عليكم، أود استلام موقع (Google Maps Pin) لمشروع ${project.title} (${project.zone}) لمعاينة القطعة ميدانياً.`
-                          : `Hello, please send the Google Maps location for ${project.titleEn} (${project.zoneEn}).`
-                      )}`}
+                      href={project.googleMapsUrl || getProjectLocationUrl(project.plotNumber)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full sm:w-auto py-2.5 px-3 rounded-xl text-xs font-bold text-ish-gold bg-ish-gold/10 hover:bg-ish-gold/20 border border-ish-gold/30 transition-all flex items-center justify-center gap-1"
-                      title={isAr ? 'إرسال اللوكيشن على Google Maps' : 'Send Google Maps Location'}
+                      className="w-full sm:w-auto py-2.5 px-3 rounded-xl text-xs font-bold text-ish-gold bg-ish-gold/10 hover:bg-ish-gold/25 border border-ish-gold/40 transition-all flex items-center justify-center gap-1 shadow-sm hover:scale-105 cursor-pointer"
+                      title={isAr ? 'فتح موقع القطعة الفعلي على Google Maps' : 'Open Location on Google Maps'}
                     >
                       <span>📍</span>
                       <span>{isAr ? 'اللوكيشن' : 'GPS'}</span>
+                      <span className="text-[10px] opacity-70">↗</span>
                     </a>
                   </div>
                 </div>
