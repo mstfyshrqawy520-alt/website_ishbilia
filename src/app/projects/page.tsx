@@ -232,7 +232,7 @@ export default function ProjectsPage() {
       )}
 
       {/* Interactive Controls: Search Bar & District Filters */}
-      <section className="py-8 section-dark sticky top-16 z-30 bg-ish-navy/95 backdrop-blur-md border-b border-white/10">
+      <section className="py-8 section-dark relative z-10 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
           {/* Search Input */}
           <div className="max-w-xl mx-auto relative">
